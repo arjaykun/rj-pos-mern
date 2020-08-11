@@ -1,7 +1,7 @@
 import { GET_ITEMS, ADD_ITEM, ITEMS_LOADING, DELETE_ITEM, UPDATE_ITEM, CHANGE_ITEMS_URL, ADD_MESSAGE, UNLOADING } from './types.js';
 import axios from 'axios';
 
-export const getItems = (url) => {
+export const getItems = url => {
 	return async dispatch => {
 		dispatch({type: ITEMS_LOADING});
 

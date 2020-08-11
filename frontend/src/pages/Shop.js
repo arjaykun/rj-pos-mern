@@ -1,24 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import ItemBox from '../components/shop/ItemBox';
-import CategoryList from '../components/shop/CategoryList';
 import Loading from '../components/utils/Loading';
 import ItemSearchInput from '../components/items/ItemSearchInput';
 import Modal from '../components/utils/Modal';
 import Cart from '../components/shop/Cart';
 import { connect } from 'react-redux';
-import { getItems } from '../actions/items';
+import { getShopItems } from '../actions/shop';
 import { MdShoppingCart } from 'react-icons/md';
-const Shop = ({items, categories, loading, getItems}) => {
+
+const Shop = ({loading, getShopItems, categories}) => {
 	
 	const [showCart, setShowCart] = useState(false);
+	const [items, setItems] = useState([]);
 
 	useEffect( ()=> {
-		if(items.length === 0) {
-			getItems()
-		}
-
+		if(categories.length === 0)
+			getShopItems()
 		//eslint-disable-next-line
 	}, [])
+
+	const selectCategory = categoryId => {
+		const select = categories.find( category => category._id === categoryId)
+		setItems(select.items);
+	}
 
 	return (
 		<div className="px-2">
@@ -48,15 +52,26 @@ const Shop = ({items, categories, loading, getItems}) => {
 							<MdShoppingCart className="text-white" />
 						</button>
 					</div>
-					<div className="flex">
-						<div className="flex flex-col w-24 p-2">
-							<CategoryList categories={categories} />
-						</div>
-						<div className="grid grid-cols-3 gap-1 flex-grow bg-gray-300 p-2 rounded-lg">
-						{items.map( item => (
+					<div className="flex items-center justify-center flex-wrap">
+						{
+							categories.map( category => (
+								<div
+								 className={`w-24 h-12 uppercase font-bold text-xs bg-${category.color !== 'black'? category.color : 'gray'}-700 text-white flex justify-center items-center flex-grow cursor-pointer hover:bg-${category.color}-500`}
+								 onClick={() => selectCategory(category._id)}
+								 key={category._id}
+								 >
+								 	{category.name}
+
+								</div>
+							))
+						}			
+					</div>
+					<div className="flex items-center justify-center flex-wrap">
+					{
+						items.map( item => (
 							<ItemBox item={item} key={item._id} />
-						))}
-						</div>
+						))		
+					}
 					</div>
 				</div>
 			}
@@ -65,13 +80,12 @@ const Shop = ({items, categories, loading, getItems}) => {
 }
 
 const mapStateToProps = state => ({	
-	items: state.items.items,
-	categories: state.items.categories,
-	loading: state.items.loading,
+	loading: state.shop.loading,
+	categories: state.shop.categories
 })
 
 const mapDispatchToProps =  {
-	getItems,
+	getShopItems
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Shop)

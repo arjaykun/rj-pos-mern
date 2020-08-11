@@ -2,7 +2,6 @@ import { GET_ITEMS, ADD_ITEM, UPDATE_ITEM, DELETE_ITEM, ITEMS_LOADING, UNLOADING
 
 const initialState = {
 	items: [],
-	categories: ['burger', 'drink', 'dessert'],
 	loading: false,
 	count: 0,
 	page: 1,
