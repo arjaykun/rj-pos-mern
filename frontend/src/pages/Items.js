@@ -5,25 +5,35 @@ import Modal from '../components/utils/Modal';
 import ItemForm from '../components/items/ItemForm';
 import ItemSearchInput from '../components/items/ItemSearchInput';
 import Confirmation from '../components/utils/Confirmation';
-import { getItems, addItem, deleteItem, updateItem, searchItem } from '../actions/items';
+import { getItems, addItem, deleteItem, updateItem, change_url } from '../actions/items';
 import { clear_message } from '../actions/messages';
 import Loading from '../components/utils/Loading';
 import AlertMessage from '../components/utils/AlertMessage';
 
-const Items = ({items, loading, messages, getItems, addItem, deleteItem, updateItem, searchItem, clear_message}) => {
+const url_base = "http://localhost:8000"
+
+const Items = ({items, messages, getItems, addItem, deleteItem, updateItem, clear_message, change_url}) => {
 
 	const [showModal, setShowModal] = useState(false);
 	const [showConfirmModal, setShowConfirmModal] = useState(false);
 	const [operation, setOperation] = useState('add');
 	const [action, setAction] = useState(null)
 	const [item, setItem] = useState({ name: '', price: '', category: ''})
+	const {page, limit, search_by, search} = items.queries
+	// const [url, setUrl] =  useState(`${url_base}/items?page=${page}&limit=${limit}`)
+
+	// useEffect( () => {
+	// 	if(items.count === 0) {
+	// 		getItems(`${url_base}/items`);
+	// 	}
+	// 	//eslint-disable-next-line
+	// }, [])
 
 	useEffect( () => {
-		if(items.count === 0) {
-			getItems('http://localhost:8000/items?limit=10&page=1');
-		}
-		//eslint-disable-next-line
-	}, [])
+		getItems(`${url_base}/items?page=${page}&limit=${limit}&search_by=${search_by}&search=${search}`)
+		 // eslint-disable-next-line
+	}, [items.queries])
+
 
 	const handleAdd = () => {
 		setAction(() => addItem);
@@ -57,7 +67,7 @@ const Items = ({items, loading, messages, getItems, addItem, deleteItem, updateI
 				<ItemForm 
 					operation={operation} 
 					action={action} 
-					loading={loading} 
+					loading={items.loading} 
 					hideModal={ hideModal} 
 					itemData={item}
 					messages={messages}
@@ -70,13 +80,13 @@ const Items = ({items, loading, messages, getItems, addItem, deleteItem, updateI
 					text={`Are you sure you want to delete this item?`}
 					yes={ deleteItem }
 					data={item._id}
-					loading={loading} 
+					loading={items.loading} 
 					no={ () => setShowConfirmModal(false) }
 				/>
 			</Modal>
 
 			{ 
-				loading ? 
+				items.loading ? 
  					<Loading />
 				:
 				<div className="px-2">				
@@ -93,7 +103,11 @@ const Items = ({items, loading, messages, getItems, addItem, deleteItem, updateI
 						</button>
 					</div>
 
-					<ItemSearchInput searchItem={getItems} />
+					<ItemSearchInput 
+						searchItem={change_url} 
+						searchText={search} 
+						clearSearch={ () => change_url({search_by:'', search:''})} 
+					/>
 				
 					{ messages.message && !messages.error ? <AlertMessage messages={messages} /> : ''}
 
@@ -115,7 +129,7 @@ const Items = ({items, loading, messages, getItems, addItem, deleteItem, updateI
 						<button 
 							className={`bg-${!items.prevPage? 'gray' : 'red'}-500 mx-2 p-2 rounded-lg text-white text-sm`}
 							disabled={!items.prevPage}
-							onClick={ () => alert('prev')}
+							onClick={ () => change_url({page: items.page - 1 }) }
 						>
 							previous
 						</button>
@@ -125,7 +139,7 @@ const Items = ({items, loading, messages, getItems, addItem, deleteItem, updateI
 						<button 
 							className={`bg-${!items.nextPage? 'gray' : 'red'}-500 mx-2 p-2 rounded-lg text-white text-sm`}
 							disabled={!items.nextPage}
-							onClick={ () => alert('next')}
+							onClick={ () => change_url({page: items.page + 1 }) }
 						>
 							next
 						</button>
@@ -139,12 +153,11 @@ const Items = ({items, loading, messages, getItems, addItem, deleteItem, updateI
 
 const mapStateToProps = state => ({
 	items: state.items,
-	loading: state.items.loading,
 	messages: state.messages
 })
 
 const mapDispatchToProps = {
-	getItems, addItem, deleteItem, updateItem, searchItem, clear_message
+	getItems, addItem, deleteItem, updateItem, clear_message, change_url
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Items)

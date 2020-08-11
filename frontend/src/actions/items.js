@@ -1,9 +1,8 @@
-import { GET_ITEMS, ADD_ITEM, ITEMS_LOADING, DELETE_ITEM, UPDATE_ITEM, SEARCH_ITEM, ADD_MESSAGE, UNLOADING } from './types.js';
+import { GET_ITEMS, ADD_ITEM, ITEMS_LOADING, DELETE_ITEM, UPDATE_ITEM, CHANGE_ITEMS_URL, ADD_MESSAGE, UNLOADING } from './types.js';
 import axios from 'axios';
 
 export const getItems = (url) => {
 	return async dispatch => {
-		// const url = "http://localhost:8000/items?limit=10&page=1"
 		dispatch({type: ITEMS_LOADING});
 
 		try {	
@@ -60,9 +59,8 @@ export const updateItem = item => {
 	}
 }
 
-export const searchItem = search => {
+export const change_url = queries => {
 	return dispatch => {
-		alert(search)
-		dispatch({ type: SEARCH_ITEM, payload:search });	
+		dispatch({ type: CHANGE_ITEMS_URL, payload: queries })
 	}
 }

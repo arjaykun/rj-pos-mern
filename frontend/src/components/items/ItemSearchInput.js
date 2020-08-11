@@ -1,12 +1,12 @@
 import React, {useState, Fragment} from 'react';
 import { MdSearch } from "react-icons/md"; 
 
-const ItemSearchInput = ({searchItem}) => {
+const ItemSearchInput = ({searchItem, searchText, clearSearch}) => {
 	const [search, setSearch] = useState('')
 
 	const handleInput = (e) => {
 		if(e.key === 'Enter')
-			searchItem("http://localhost:8000/items?limit=10&page=1&search_by=name&search="+ search)
+			searchItem({search_by: 'name', search })
 	}
 
 	return (
@@ -21,6 +21,19 @@ const ItemSearchInput = ({searchItem}) => {
 					onKeyPress={handleInput}
 				/>
 				<span className="absolute top-0 right-0 text-2xl mt-4 mr-2 text-gray-700"><MdSearch /></span>
+			</div>
+			<div>
+			{
+				searchText ? 
+					<div className="flex justify-between items-center">
+						<span>Search Key: {searchText}</span>
+						<button
+							onClick={clearSearch}
+						>Clear Search</button>
+					</div>					
+					:
+					null
+			}
 			</div>
 		</Fragment>
 	)

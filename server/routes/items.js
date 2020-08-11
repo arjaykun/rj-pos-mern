@@ -13,10 +13,6 @@ router
 		try {
 			const items = await Item.paginate(query, options)
 
-			if(items.data.length === 0) {
-				return res.status(404).json({ msg: "Page not found." })
-			}
-
 			return res.json({...items})
 		} catch(err) {
 			return res.status(500).json({msg: 'Sorry, Something went wrong!'})

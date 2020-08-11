@@ -1,4 +1,4 @@
-import { GET_ITEMS, ADD_ITEM, UPDATE_ITEM, DELETE_ITEM, ITEMS_LOADING, UNLOADING, SEARCH_ITEM } from '../actions/types';
+import { GET_ITEMS, ADD_ITEM, UPDATE_ITEM, DELETE_ITEM, ITEMS_LOADING, UNLOADING, CHANGE_ITEMS_URL } from '../actions/types';
 
 const initialState = {
 	items: [],
@@ -9,8 +9,18 @@ const initialState = {
 	totalPages: 1, 
 	nextPage: null,
 	prevPage: null,
-	limit: 10,
-	// nextId: 5
+	queries: { 
+		page: 1,
+		limit: 10,
+		sort_by: '',
+		asc: 1, // 1 for asc , -1 for desc
+		start: '',
+		end: '',
+		filter_by: '',
+		filter_with: '',
+		search_by: '',
+		search: '',
+	},
 }
 
 const ItemsReducer = (state = initialState, action) => {
@@ -47,12 +57,13 @@ const ItemsReducer = (state = initialState, action) => {
 				items: state.items.filter( item => item._id !== action.payload ), 
 				loading: false
 			}
-		case SEARCH_ITEM:
+		case CHANGE_ITEMS_URL:
 			return {
 				...state,
-				items: state.items.filter( item => (
-					item.name.includes(action.payload) || item.category.includes(action.payload)
-				))
+				queries: {
+					...state.queries,
+					...action.payload
+				}
 			}
 		default:
 			return state;

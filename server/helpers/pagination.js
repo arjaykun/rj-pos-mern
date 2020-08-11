@@ -25,7 +25,8 @@ exports.pagination = (q, add_options) => {
 	if(sort_by) options.sort = {[sort_by]: asc};
 
 	const query = {};
-	if(search) query[search_by] = new RegExp(`.*${search}.*`, 'gi') //search_by=name&search=burger
+	if(search) query[search_by] = new RegExp(`.*${search}.*`, 'gi')
+	// else delete query[search_by] //search_by=name&search=burger
 	if(filter_by && filter_with) query[filter_by] = filter_with //filter_by=completed&filter_with=true
 	if(start) query['createdAt'] = { $gte : start } //start=2020-07-31
 	if(start && end) query['createdAt'] = { $gte: start, $lte: end } //start=2020-07-31&end=2020-08-10
