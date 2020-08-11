@@ -17,7 +17,8 @@ router.route('/')
 								items: cat.items.map( item => ({
 									_id: item.id,
 									name: item.name,
-									price: item.price
+									price: item.price,
+									category: item.category,
 								}))
 							})),
 				count: categories.length,
@@ -38,6 +39,15 @@ router.route('/')
 		}
 
 	})
+
+router.get('/all', isAdmin, async (req, res) => {
+	try {
+		const categories = await Category.find({})
+		res.json({data: categories}) 
+	} catch(error) {
+		res.status(500).json({ msg: 'Sorry, Something went wrong!'})
+	}
+})
 
 router
 	.route('/:id')

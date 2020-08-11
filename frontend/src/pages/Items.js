@@ -5,7 +5,8 @@ import Modal from '../components/utils/Modal';
 import ItemForm from '../components/items/ItemForm';
 import ItemSearchInput from '../components/items/ItemSearchInput';
 import Confirmation from '../components/utils/Confirmation';
-import { getItems, addItem, deleteItem, updateItem, change_url } from '../actions/items';
+import { getItems, addItem, deleteItem, updateItem, change_url } from '../actions/items'
+import { getCategories } from '../actions/categories';
 import { clear_message } from '../actions/messages';
 import Loading from '../components/utils/Loading';
 import AlertMessage from '../components/utils/AlertMessage';
@@ -13,7 +14,7 @@ import Pagination from '../components/utils/Pagination';
 
 const url_base = "http://localhost:8000"
 
-const Items = ({items, messages, getItems, addItem, deleteItem, updateItem, clear_message, change_url}) => {
+const Items = ({items, messages, getItems, addItem, deleteItem, updateItem, clear_message, change_url, categories, getCategories}) => {
 
 	const [showModal, setShowModal] = useState(false);
 	const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -23,9 +24,16 @@ const Items = ({items, messages, getItems, addItem, deleteItem, updateItem, clea
 	const {page, limit, search_by, search} = items.queries
 
 	useEffect( () => {
-		getItems(`${url_base}/items?page=${page}&limit=${limit}&search_by=${search_by}&search=${search}`)
+		if(items.items.length === 0)
+			getItems(`${url_base}/items?page=${page}&limit=${limit}&search_by=${search_by}&search=${search}`)
 		 // eslint-disable-next-line
 	}, [items.queries])
+
+	useEffect( ()=> {
+		if(categories.categories.length === 0)
+			getCategories()
+		 // eslint-disable-next-line
+	}, [])
 
 
 	const handleAdd = () => {
@@ -63,6 +71,8 @@ const Items = ({items, messages, getItems, addItem, deleteItem, updateItem, clea
 					loading={items.loading} 
 					hideModal={ hideModal} 
 					itemData={item}
+					categories={categories.categories}
+					getCategories={getCategories}
 					messages={messages}
 				/>
 			</Modal>
@@ -79,7 +89,7 @@ const Items = ({items, messages, getItems, addItem, deleteItem, updateItem, clea
 			</Modal>
 
 			{ 
-				items.loading ? 
+				items.loading && categories.loading? 
  					<Loading />
 				:
 				<div className="px-2">				
@@ -128,11 +138,12 @@ const Items = ({items, messages, getItems, addItem, deleteItem, updateItem, clea
 
 const mapStateToProps = state => ({
 	items: state.items,
-	messages: state.messages
+	messages: state.messages,
+	categories: state.categories,
 })
 
 const mapDispatchToProps = {
-	getItems, addItem, deleteItem, updateItem, clear_message, change_url
+	getItems, addItem, deleteItem, updateItem, clear_message, change_url, getCategories
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Items)

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ItemBox from '../components/shop/ItemBox';
+import CategoryBox from '../components/shop/CategoryBox';
 import Loading from '../components/utils/Loading';
 import ItemSearchInput from '../components/items/ItemSearchInput';
 import Modal from '../components/utils/Modal';
@@ -12,16 +13,39 @@ const Shop = ({loading, getShopItems, categories}) => {
 	
 	const [showCart, setShowCart] = useState(false);
 	const [items, setItems] = useState([]);
-
+	const [colors, setColors] = useState({})
 	useEffect( ()=> {
-		if(categories.length === 0)
+		if(categories.length === 0) {
 			getShopItems()
+		}
+		getColors()
 		//eslint-disable-next-line
-	}, [])
+	}, [categories])
+
+	const getAllItems = () => {
+		const all = [];
+		categories.forEach( category => {
+			all.push(...category.items)
+		})
+
+		setItems(all)
+	}
+
+	const getColors = () => {
+		const output = {}
+		categories.forEach( category => {
+			output[category.name] = category.color
+		})
+		setColors(output);
+	}
 
 	const selectCategory = categoryId => {
-		const select = categories.find( category => category._id === categoryId)
-		setItems(select.items);
+		if(categoryId !== 1) {
+			const select = categories.find( category => category._id === categoryId)
+			setItems(select.items);
+			return;
+		}
+		getAllItems();
 	}
 
 	return (
@@ -53,23 +77,17 @@ const Shop = ({loading, getShopItems, categories}) => {
 						</button>
 					</div>
 					<div className="flex items-center justify-center flex-wrap">
+						<CategoryBox category={{name: 'all',_id:1, color:"gray"}} selectCategory={selectCategory} />
 						{
 							categories.map( category => (
-								<div
-								 className={`w-24 h-12 uppercase font-bold text-xs bg-${category.color !== 'black'? category.color : 'gray'}-700 text-white flex justify-center items-center flex-grow cursor-pointer hover:bg-${category.color}-500`}
-								 onClick={() => selectCategory(category._id)}
-								 key={category._id}
-								 >
-								 	{category.name}
-
-								</div>
+								<CategoryBox category={category} key={category._id} selectCategory={selectCategory} />
 							))
 						}			
 					</div>
-					<div className="flex items-center justify-center flex-wrap">
+					<div className="grid grid-cols-3 py-2">
 					{
 						items.map( item => (
-							<ItemBox item={item} key={item._id} />
+							<ItemBox item={item} key={item._id} color={colors[item.category]} />
 						))		
 					}
 					</div>

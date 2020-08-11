@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { MdSave } from "react-icons/md";
 import ReactLoading from 'react-loading';
-import AlertMessage from '../utils/AlertMessage'
-const ItemForm = ({operation, action, loading, hideModal, itemData, messages}) => {
+import AlertMessage from '../utils/AlertMessage';
+
+const ItemForm = ({operation, action, loading, hideModal, itemData, messages, categories, getCategories}) => {
 		
 	const [item, setItem] = useState({name:'', price: '', category: ''});
 	const inputRef = useRef();
+	
+
 	useEffect( ()=> {
 		if(!loading && !messages.error) 
 			hideModal()
@@ -73,9 +76,11 @@ const ItemForm = ({operation, action, loading, hideModal, itemData, messages}) =
 						onChange={handleChange} 
 	        >
 	        	<option disabled value="">Select Category</option>
-	          <option value="burger">Burger</option>
-	          <option value="drink">Drink</option>
-	          <option value="dessert">Dessert</option>
+	          {
+	          	categories.map( category => (
+	          		<option value={category.name}>{category.name}</option>
+	          	))
+	          }
 	        </select>
 	        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
 	          <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
