@@ -9,6 +9,7 @@ import { getItems, addItem, deleteItem, updateItem, change_url } from '../action
 import { clear_message } from '../actions/messages';
 import Loading from '../components/utils/Loading';
 import AlertMessage from '../components/utils/AlertMessage';
+import Pagination from '../components/utils/Pagination';
 
 const url_base = "http://localhost:8000"
 
@@ -20,14 +21,6 @@ const Items = ({items, messages, getItems, addItem, deleteItem, updateItem, clea
 	const [action, setAction] = useState(null)
 	const [item, setItem] = useState({ name: '', price: '', category: ''})
 	const {page, limit, search_by, search} = items.queries
-	// const [url, setUrl] =  useState(`${url_base}/items?page=${page}&limit=${limit}`)
-
-	// useEffect( () => {
-	// 	if(items.count === 0) {
-	// 		getItems(`${url_base}/items`);
-	// 	}
-	// 	//eslint-disable-next-line
-	// }, [])
 
 	useEffect( () => {
 		getItems(`${url_base}/items?page=${page}&limit=${limit}&search_by=${search_by}&search=${search}`)
@@ -112,7 +105,7 @@ const Items = ({items, messages, getItems, addItem, deleteItem, updateItem, clea
 					{ messages.message && !messages.error ? <AlertMessage messages={messages} /> : ''}
 
 					{  
-						items.count > 0 ?
+						items.items.length > 0 ?
 							items.items.map( item => (
 							 	<ItemDetail 
 							 		item={item} 
@@ -125,26 +118,8 @@ const Items = ({items, messages, getItems, addItem, deleteItem, updateItem, clea
 							<div className="text-center text-4xl bg-gray-200 py-5 font-bold">No Item</div>
 					}
 
-					<div className="flex justify-center items-center">
-						<button 
-							className={`bg-${!items.prevPage? 'gray' : 'red'}-500 mx-2 p-2 rounded-lg text-white text-sm`}
-							disabled={!items.prevPage}
-							onClick={ () => change_url({page: items.page - 1 }) }
-						>
-							previous
-						</button>
-						<div className="text-base tracking-wider">
-							page { items.page } of { items.totalPages }
-						</div>
-						<button 
-							className={`bg-${!items.nextPage? 'gray' : 'red'}-500 mx-2 p-2 rounded-lg text-white text-sm`}
-							disabled={!items.nextPage}
-							onClick={ () => change_url({page: items.page + 1 }) }
-						>
-							next
-						</button>
-					</div>
-
+					<Pagination data={items} change_url={change_url} />
+					
 				</div>
 			}
 		</div>
