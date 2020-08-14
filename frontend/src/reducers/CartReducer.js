@@ -9,7 +9,7 @@ const initialState = {
 }
 
 const cartReducer = (state=initialState, action) => {
-
+ 
 	switch(action.type) {
 		case CART_LOADING:
 			return { ...state, loading: true}
@@ -17,7 +17,11 @@ const cartReducer = (state=initialState, action) => {
 		case ADD_CART_ITEM: 
 			return {
 				...state,
-				orderItems: [...state.orderItems, action.payload.item],
+				orderItems: [
+					action.payload.item, 
+					...state.orderItems.filter( item => item._id !== action.payload.item._id),
+				],
+				total: action.payload.total,
 				loading: false,
 			}
 		default: 

@@ -98,12 +98,19 @@ const Items = ({items, messages, getItems, addItem, deleteItem, updateItem, clea
 						className="py-2 px-2 mt-5 mb-2 flex justify-between items-center border-b border-t border-red-900"
 					>
 						<span className="text-xl uppercase font-bold">Item List</span>
-						<button
-							className="bg-gray-800 p-2 rounded-lg text-gray-100 hover:bg-gray-700"
-							onClick={ handleAdd }
-						>
-							Add Item
-						</button>
+						<div>
+							<button
+								className="bg-green-800 p-2 rounded-lg text-gray-100 hover:bg-green-700"
+							>
+								Categories
+							</button>
+							<button
+								className="bg-gray-800 p-2 rounded-lg text-gray-100 hover:bg-gray-700"
+								onClick={ handleAdd }
+							>
+								Add Item
+							</button>
+						</div>
 					</div>
 
 					<ItemSearchInput 

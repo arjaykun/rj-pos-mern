@@ -19,3 +19,4 @@ export const CATEGORIES_LOADING = 'CATEGORIES_LOADING'
 // shop action types
 export const SHOP_ITEMS_LOADING = 'SHOP_ITEMS_LOADING'
 export const GET_SHOP_ITEMS = 'GET_SHOP_ITEMS'
+export const GET_ALL_ITEMS = 'GET_ALL_ITEMS'

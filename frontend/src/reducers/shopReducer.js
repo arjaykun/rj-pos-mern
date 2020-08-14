@@ -1,7 +1,8 @@
-import { GET_SHOP_ITEMS, SHOP_ITEMS_LOADING } from '../actions/types'
+import { GET_SHOP_ITEMS, SHOP_ITEMS_LOADING ,GET_ALL_ITEMS } from '../actions/types'
 
 const initialState = {
 	categories: [],
+	allItems:[],
 	count: 0,
 	loading: false,
 }
@@ -16,6 +17,11 @@ const shopReducer = (state=initialState, action) => {
 				loading: false,
 				count: action.payload.count,
 				categories: action.payload.data,
+			}
+		case GET_ALL_ITEMS:
+			return {
+				...state, 
+				allItems: action.payload,
 			}
 		default:
 			return state

@@ -6,30 +6,23 @@ import ItemSearchInput from '../components/items/ItemSearchInput';
 import Modal from '../components/utils/Modal';
 import Cart from '../components/shop/Cart';
 import { connect } from 'react-redux';
-import { getShopItems } from '../actions/shop';
+import { getShopItems, getAllItems } from '../actions/shop';
 import { MdShoppingCart } from 'react-icons/md';
 
-const Shop = ({loading, getShopItems, categories}) => {
+const Shop = ({loading, getShopItems, categories, allItems, getAllItems}) => {
 	
 	const [showCart, setShowCart] = useState(false);
 	const [items, setItems] = useState([]);
 	const [colors, setColors] = useState({})
 	useEffect( ()=> {
-		if(categories.length === 0) {
+		if(categories.length === 0) {		
+			getAllItems()
 			getShopItems()
 		}
 		getColors()
 		//eslint-disable-next-line
 	}, [categories])
 
-	const getAllItems = () => {
-		const all = [];
-		categories.forEach( category => {
-			all.push(...category.items)
-		})
-
-		setItems(all)
-	}
 
 	const getColors = () => {
 		const output = {}
@@ -45,7 +38,7 @@ const Shop = ({loading, getShopItems, categories}) => {
 			setItems(select.items);
 			return;
 		}
-		getAllItems();
+		setItems(allItems)
 	}
 
 	return (
@@ -84,13 +77,19 @@ const Shop = ({loading, getShopItems, categories}) => {
 							))
 						}			
 					</div>
-					<div className="grid grid-cols-3 py-2">
 					{
-						items.map( item => (
-							<ItemBox item={item} key={item._id} color={colors[item.category]} />
-						))		
+						items.length > 0 ?
+							<div className="grid grid-cols-3 py-2">
+							{	
+								items.map( item => (
+									<ItemBox item={item} key={item._id} color={colors[item.category]} />
+								))		
+							}
+							</div>
+						:
+							<div className="text-center text-2xl flex h-64 justify-center items-center font-bold bg-red-200">Select Category to Start!</div>
 					}
-					</div>
+					
 				</div>
 			}
 		</div>
@@ -99,11 +98,12 @@ const Shop = ({loading, getShopItems, categories}) => {
 
 const mapStateToProps = state => ({	
 	loading: state.shop.loading,
-	categories: state.shop.categories
+	categories: state.shop.categories,
+	allItems: state.shop.allItems,
 })
 
 const mapDispatchToProps =  {
-	getShopItems
+	getShopItems, getAllItems
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Shop)

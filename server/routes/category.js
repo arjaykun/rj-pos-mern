@@ -5,6 +5,15 @@ const { isAdmin } = require('../middlewares/checkRole');
 
 router.route('/')
 	.get(isAdmin, async (req, res) => {
+		
+		if(req.query.get === 'all') {
+			try {
+				const categories = await Category.find({});
+				return res.json({data:categories, count:categories.length})
+			} catch(error) {
+				return res.status(500).json({msg: 'Sorry, Something went wrong!'})
+			}
+		}
 
 		try {
 			const categories = await Category.find().populate('items')

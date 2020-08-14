@@ -7,7 +7,15 @@ const { isAdmin } = require('../middlewares/checkRole');
 router
 	.route('/')
 	.get(async (req, res) => {
-		
+		if(req.query.get === 'all') {
+			try {
+				const items = await Item.find({});
+				return res.json({data:items, count:items.length})
+			} catch(error) {
+				return res.status(500).json({msg: 'Sorry, Something went wrong!'})
+			}
+		}
+
 		const { query, options } = pagination(req.query);
 
 		try {

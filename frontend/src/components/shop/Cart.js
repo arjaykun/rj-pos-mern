@@ -1,7 +1,8 @@
-import React from 'react';
-import { MdClose, MdRemove } from 'react-icons/md'
+import React, {Fragment} from 'react';
+import { connect } from 'react-redux';
+import CartItem from './CartItem';
 
-const Cart = ({hideModal}) => {
+const Cart = ({hideModal, cart}) => {
 	return (
 		<div>
 			<h1 className="text-2xl font-bold uppercase pb-2">Order Summary</h1>
@@ -22,38 +23,28 @@ const Cart = ({hideModal}) => {
 					</tr>
 				</thead>
 				<tbody className="text-gray-800 text-base">
-					<tr>
-						<td className="py-2">Cheese Burger</td>
-						<td className="py-2">&#8369;15</td>
-						<td className="py-2">2</td>
-						<td className="py-2">&#8369;30</td>
-						<td className="py-2 flex justify-center items-center">
-							<button className="bg-blue-900 rounded-full p-1 text-white mr-1 hover:bg-blue-800"> 
-								<MdClose /> 
-							</button>
-							<button className="bg-gray-300 rounded-full p-1 text-gray-700 hover:bg-gray-200"> 
-								<MdRemove /> 
-							</button>
-						</td>
-					</tr>
-					<tr>
-						<td className="py-2">Coke Sakto</td>
-						<td className="py-2">&#8369;12</td>
-						<td className="py-2">1</td>
-						<td className="py-2">&#8369;12</td>
-						<td className="py-2 flex justify-center items-center">
-							<button className="bg-blue-900 rounded-full p-1 text-white mr-1 hover:bg-blue-800"> 
-								<MdClose /> 
-							</button>
-							<button className="bg-gray-300 rounded-full p-1 text-gray-700 hover:bg-gray-200"> 
-								<MdRemove /> 
-							</button>
-						</td>
-					</tr>
-					<tr className="border-t-2 border-gray-700">
-						<td colSpan="3" className="font-extrabold uppercase">Total</td>
-						<td className="py-2">&#8369;42</td>
-					</tr>
+				 {
+				 	cart.orderItems.length > 0 ?
+				 	<Fragment>
+						{	
+							cart.orderItems.map( item => (
+								<CartItem item={item} key={item._id} />
+							))
+						}
+						<tr className="border-t-2 border-gray-700">
+							<td colSpan="3" className="font-extrabold uppercase">Total</td>
+							<td className="py-2">&#8369;{cart.total}</td>
+						</tr>
+					</Fragment>
+					:
+						<tr>
+							<td
+								colSpan="5" 
+								className="text-center font-bold text-gray-700 text-2xl py-5">
+								Cart is Empty!
+							</td>
+						</tr>
+				 }
 				</tbody>
 			</table>
 			
@@ -73,4 +64,8 @@ const Cart = ({hideModal}) => {
 	)
 }
 
-export default Cart
+const mapStateToProps = state => ({
+	cart: state.cart
+})
+
+export default connect(mapStateToProps)(Cart)
