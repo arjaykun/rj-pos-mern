@@ -78,7 +78,7 @@ const ItemForm = ({operation, action, loading, hideModal, itemData, messages, ca
 	        	<option disabled value="">Select Category</option>
 	          {
 	          	categories.map( category => (
-	          		<option value={category.name}>{category.name}</option>
+	          		<option value={category.name} key={category._id}>{category.name}</option>
 	          	))
 	          }
 	        </select>

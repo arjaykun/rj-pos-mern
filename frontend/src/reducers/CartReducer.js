@@ -1,4 +1,4 @@
-import { CART_LOADING, ADD_CART_ITEM } from '../actions/types';
+import { CART_LOADING, ADD_CART_ITEM, CLEAR_CART, REMOVE_CART_ITEM, CHANGE_ITEM_QTY } from '../actions/types';
 
 const initialState = {
 	orderItems: [],
@@ -14,16 +14,17 @@ const cartReducer = (state=initialState, action) => {
 		case CART_LOADING:
 			return { ...state, loading: true}
 		
-		case ADD_CART_ITEM: 
+		case ADD_CART_ITEM: 		
+		case REMOVE_CART_ITEM:	
+		case CHANGE_ITEM_QTY: 
 			return {
 				...state,
-				orderItems: [
-					action.payload.item, 
-					...state.orderItems.filter( item => item._id !== action.payload.item._id),
-				],
+				orderItems: action.payload.items,
 				total: action.payload.total,
 				loading: false,
 			}
+		case CLEAR_CART:
+			return initialState;
 		default: 
 			return state;
 	}

@@ -1,10 +1,20 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useState} from 'react';
 import { connect } from 'react-redux';
 import CartItem from './CartItem';
+import { clearCart, removeItemInCart, changeQty } from '../../actions/cart';
+import Modal from '../utils/Modal';
+import OrderForm from './OrderForm';
 
-const Cart = ({hideModal, cart}) => {
+const Cart = ({hideModal, cart, clearCart, removeItemInCart, changeQty}) => {
+	
+	const [ showOrderForm, setShowOrderForm ] = useState(false)	
+
 	return (
 		<div>
+			<Modal>
+				<OrderForm show={showOrderForm} hideModal={ () => setShowOrderForm(false) } />	
+			</Modal>
+
 			<h1 className="text-2xl font-bold uppercase pb-2">Order Summary</h1>
 			<table className="table-auto w-full">
 				<thead className="text-gray-700 text-xs">
@@ -14,11 +24,16 @@ const Cart = ({hideModal, cart}) => {
 							<th className="py-2 text-left">Qty</th>
 							<th className="py-2 text-left">Subtotal</th>
 							<th className="py-2">
-								<button 
-									className="px-2 py-0 bg-gray-300 text-gray-700 rounded-lg text-xs"
-								>
-									clear
-								</button>
+								{
+									cart.orderItems.length > 0 ?
+										<button 
+											className="px-2 py-0 bg-gray-300 text-gray-700 rounded-lg text-xs"
+											onClick={ () => clearCart() }
+										>
+										clear
+									</button> : null
+								}
+								
 							</th>
 					</tr>
 				</thead>
@@ -28,7 +43,12 @@ const Cart = ({hideModal, cart}) => {
 				 	<Fragment>
 						{	
 							cart.orderItems.map( item => (
-								<CartItem item={item} key={item._id} />
+								<CartItem 
+									item={item} 
+									key={item._id}
+								  removeItem={removeItemInCart}
+								  changeQty={changeQty}
+								 />
 							))
 						}
 						<tr className="border-t-2 border-gray-700">
@@ -68,4 +88,4 @@ const mapStateToProps = state => ({
 	cart: state.cart
 })
 
-export default connect(mapStateToProps)(Cart)
+export default connect(mapStateToProps, {clearCart, removeItemInCart, changeQty})(Cart)

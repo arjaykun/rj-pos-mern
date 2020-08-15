@@ -2,18 +2,22 @@ import React, { useEffect, useState } from 'react';
 import ItemBox from '../components/shop/ItemBox';
 import CategoryBox from '../components/shop/CategoryBox';
 import Loading from '../components/utils/Loading';
-import ItemSearchInput from '../components/items/ItemSearchInput';
 import Modal from '../components/utils/Modal';
 import Cart from '../components/shop/Cart';
+import ShopSearch from '../components/shop/ShopSearch';
 import { connect } from 'react-redux';
 import { getShopItems, getAllItems } from '../actions/shop';
 import { MdShoppingCart } from 'react-icons/md';
+import { MdSearch } from "react-icons/md"; 
+import ReactLoading from 'react-loading'
 
-const Shop = ({loading, getShopItems, categories, allItems, getAllItems}) => {
+const Shop = ({loading, getShopItems, categories, allItems, getAllItems, cartTotal, cartLoading}) => {
 	
 	const [showCart, setShowCart] = useState(false);
+	const [showSearch, setShowSearch] = useState(false);
 	const [items, setItems] = useState([]);
 	const [colors, setColors] = useState({})
+	
 	useEffect( ()=> {
 		if(categories.length === 0) {		
 			getAllItems()
@@ -43,31 +47,49 @@ const Shop = ({loading, getShopItems, categories, allItems, getAllItems}) => {
 
 	return (
 		<div className="px-2">
+		
 			<Modal show={showCart} hideModal={ () => setShowCart(false)} >
 				<Cart hideModal={ () => setShowCart(false)} />
 			</Modal>
+			<Modal show={showSearch} hideModal={ () => setShowSearch(false)} >
+				<ShopSearch  showSearch={showSearch} hideModal={ () => setShowSearch(false) } setItems={setItems} />
+			</Modal>
+			
 			{
 			loading ? 
 				<Loading />
 			:
 				<div className="py-2">
 					<div 
-						className="relative rounded-lg bg-blue-900 p-2">
-						<h1 className="text-4xl font-bold text-white pt-2 ml-1">&#8369; 0.00</h1>
+						className="relative bg-blue-900 p-2 flex justify-between items-center">
+						<h1 className="text-4xl font-bold text-white pt-2 ml-1 flex items-center">
+							<span className="mr-1">&#8369; {parseFloat(cartTotal.toFixed(2))} </span>
+							{
+								cartLoading ? 
+									<ReactLoading type={'spokes'} color="#fff" height="40px" width="50px" />
+								: null
+							}
+						</h1>
+
+						<div className="flex items-center">
+							<button 
+								className="rounded-full flex items-center justify-center bg-red-500 h-10 w-12 m-1"
+								onClick={ () => setShowCart(true)}
+							>
+								<MdShoppingCart className="text-white" />
+							</button>
+							<button 
+								className="rounded-full flex items-center justify-center bg-green-500 h-10 w-12"
+								onClick={ () => setShowSearch(true) }
+							>
+								<MdSearch className="text-white" />
+							</button>
+						</div>
 						<span 
 							className="absolute top-0 left-0 font-extrabold text-red-700 py-2 px-3 text-base uppercase"
 						>
 						total
 						</span>
-					</div>
-					<div className="flex items-center">
-						<div className="flex-grow mr-2"><ItemSearchInput /></div>
-						<button 
-							className="w-1/12 rounded-full flex items-center justify-center bg-red-500 h-10 w-12"
-							onClick={ () => setShowCart(true)}
-						>
-							<MdShoppingCart className="text-white" />
-						</button>
 					</div>
 					<div className="flex items-center justify-center flex-wrap">
 						<CategoryBox category={{name: 'all',_id:1, color:"gray"}} selectCategory={selectCategory} />
@@ -82,7 +104,7 @@ const Shop = ({loading, getShopItems, categories, allItems, getAllItems}) => {
 							<div className="grid grid-cols-3 py-2">
 							{	
 								items.map( item => (
-									<ItemBox item={item} key={item._id} color={colors[item.category]} />
+									<ItemBox item={item} key={item._id} color={colors[item.category]} loading="cartLoading" />
 								))		
 							}
 							</div>
@@ -100,6 +122,8 @@ const mapStateToProps = state => ({
 	loading: state.shop.loading,
 	categories: state.shop.categories,
 	allItems: state.shop.allItems,
+	cartTotal: state.cart.total,
+	cartLoading: state.cart.loading
 })
 
 const mapDispatchToProps =  {

@@ -1,5 +1,6 @@
-import { GET_SHOP_ITEMS, SHOP_ITEMS_LOADING, GET_ALL_ITEMS } from './types'
+import { GET_SHOP_ITEMS, SHOP_ITEMS_LOADING, GET_ALL_ITEMS} from './types'
 import axios from 'axios'
+
 export const getShopItems = () => {
 	return async dispatch => {
 		dispatch({type:SHOP_ITEMS_LOADING})
@@ -14,7 +15,6 @@ export const getShopItems = () => {
 	}
 }
 
-
 export const getAllItems = () => {
 	return async dispatch => {
 		try {
@@ -25,3 +25,4 @@ export const getAllItems = () => {
 		}
 	}
 }
+

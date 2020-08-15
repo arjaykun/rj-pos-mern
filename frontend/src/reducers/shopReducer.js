@@ -1,4 +1,5 @@
-import { GET_SHOP_ITEMS, SHOP_ITEMS_LOADING ,GET_ALL_ITEMS } from '../actions/types'
+import { GET_SHOP_ITEMS, SHOP_ITEMS_LOADING ,GET_ALL_ITEMS
+} from '../actions/types'
 
 const initialState = {
 	categories: [],
