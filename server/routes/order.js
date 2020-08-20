@@ -4,13 +4,13 @@ const router = express.Router();
 const Order = require('../models/order');
 const { pagination } = require('../helpers/pagination');
 const { isAdmin } = require ('../middlewares/checkRole')
+
 router.route('/')
 	.get(async (req, res) => { 
 
-	const { query, options } = pagination(req.query, {populate: "items.item"});
+	const { query, options } = pagination(req.query);
 
 	try {
-
 		const orders = await Order.paginate(query, options)
 		return res.json(orders)
 
