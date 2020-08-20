@@ -1,6 +1,13 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import { getOrders} from '../actions/orders';
+import { connect } from 'react-redux';
 
-const Orders = () => {
+const Orders = ({getOrders}) => {
+		
+	useEffect( () => {
+		getOrders();
+	}, [])
+
 	return (
 		<div className="px-2">
 			<div 
@@ -55,4 +62,4 @@ const Orders = () => {
 	)
 }
 
-export default Orders
+export default connect(null, {getOrders})(Orders)

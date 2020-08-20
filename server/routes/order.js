@@ -21,10 +21,10 @@ router.route('/')
 
 	})
 	.post(async (req, res) => {
-		const { items, discount, total } = req.body;
+		const { items, discount, total, payment, change} = req.body;
 
 		const order = await Order.create({
-			items, discount, total
+			items, discount, total, payment, change
 		}).catch( error => {
 			return res.status(500).json({ msg: "Sorry, Something went wrong!"})
 		})
@@ -74,7 +74,7 @@ router
 		const { items, discount, total } = req.body;
 
 		const response = await Order.updateOne({_id: req.params.id}, {
-			$set: { items, discount, total }
+			$set: { items, discount, total, payment, change }
 		}, {omitUndefined:true}).catch(error => res.status(400).json({error}))
 
 		if(response) {

@@ -11,7 +11,17 @@ const orderItemSchema = new mongoose.Schema({
 
 const orderSchema = new mongoose.Schema({
 	items: [orderItemSchema],
+	
+	payment: {
+		type: Number,
+		required: true,
+	},
 
+	change: {
+		type: Number,
+		required: true,
+	},
+	
 	discount: {
 		type: Number,
 		required: true,
