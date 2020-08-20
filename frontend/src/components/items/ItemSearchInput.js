@@ -6,7 +6,7 @@ const ItemSearchInput = ({searchItem, searchText, clearSearch}) => {
 
 	const handleInput = (e) => {
 		if(e.key === 'Enter')
-			searchItem({search_by: 'name', search })
+			searchItem({search_by: 'name', search, page: 1 })
 	}
 
 	return (

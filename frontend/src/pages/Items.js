@@ -13,7 +13,7 @@ import AlertMessage from '../components/utils/AlertMessage';
 import Pagination from '../components/utils/Pagination';
 
 const url_base = "http://localhost:8000"
-
+ 
 const Items = ({items, messages, getItems, addItem, deleteItem, updateItem, clear_message, change_url, categories, getCategories}) => {
 
 	const [showModal, setShowModal] = useState(false);
@@ -24,7 +24,6 @@ const Items = ({items, messages, getItems, addItem, deleteItem, updateItem, clea
 	const {page, limit, search_by, search} = items.queries
 
 	useEffect( () => {
-		if(items.items.length === 0)
 			getItems(`${url_base}/items?page=${page}&limit=${limit}&search_by=${search_by}&search=${search}`)
 		 // eslint-disable-next-line
 	}, [items.queries])
@@ -54,7 +53,7 @@ const Items = ({items, messages, getItems, addItem, deleteItem, updateItem, clea
 		setShowModal(false);
 		if(messages.message)
 			clear_message();
-	}
+	} 
 
 	const handleDelete = data=> {
 		setOperation('delete')

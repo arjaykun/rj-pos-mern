@@ -16,6 +16,7 @@ export const CLEAR_MESSAGE = 'CLEAR_MESSAGE'
 export const UNLOADING = 'UNLOADING'
 // pagination action types
 export const CHANGE_ITEMS_URL = 'CHANGE_ITEMS_URL'
+export const CHANGE_ORDERS_URL = 'CHANGE_ORDERS_URL'
 // categories action types
 export const GET_CATEGORIES = 'GET_CATEGORIES'
 export const CATEGORIES_LOADING = 'CATEGORIES_LOADING'

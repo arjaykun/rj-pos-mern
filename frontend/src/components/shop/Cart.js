@@ -23,15 +23,25 @@ const Cart = ({hideModal,cart, clearCart, removeItemInCart, changeQty, addOrder}
 
 		if(+pay >= cart.total) {
 			const change = (+pay - cart.total)
-			addOrder({ 
+			const result = addOrder({ 
 				items: cart.orderItems, 
 				total: cart.total, 
 				discount: cart.discount, 
 				payment: pay,
-				change: change,
+				change: Number(change.toFixed(2)),
 				isDine: cart.dineIn
 			})
-		}
+
+			if(result){
+				alert('Order completed!')
+				clearCart()
+				setPay(0)
+				setIsOrder(false)
+				hideModal()
+			}
+			else
+				alert("Order failed!") 
+		}	
 		else
 			alert("Invalid Payment")
 	}

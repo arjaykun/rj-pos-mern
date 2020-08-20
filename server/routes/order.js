@@ -31,7 +31,7 @@ router.route('/')
 
 
 		if(order) {	
-			res.status(201).json({msg:"Order is created"})
+			res.status(201).json({msg:"Order is created", data: order})
 		}
 
 	})

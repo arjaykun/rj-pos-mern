@@ -1,12 +1,20 @@
 import React, {useEffect} from 'react';
-import { getOrders} from '../actions/orders';
+import { getOrders, change_url } from '../actions/orders';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import Pagination from '../components/utils/Pagination';
 
-const Orders = ({getOrders}) => {
-		
+const url_base = "http://localhost:8000"
+
+const Orders = ({getOrders, orders, loading, change_url}) => {
+	
+	const {page, limit} = orders.queries
+	
 	useEffect( () => {
-		getOrders();
-	}, [])
+		getOrders(`${url_base}/orders?page=${page}&limit=${limit}`);
+		//eslint-disable-next-line
+	}, [orders.queries])
+
 
 	return (
 		<div className="px-2">
@@ -31,35 +39,29 @@ const Orders = ({getOrders}) => {
 					</tr>
 				</thead>
 				<tbody>
-					<tr className="border-b-2">
-						<td className="p-2">06/12/2020</td>
-						<td className="p-2">&#8369;580</td>
-						<td className="p-2">completed</td>
-						<td className="p-2">
-							<button>view</button>
-						</td>
-					</tr>
-					<tr className="border-b-2">
-						<td className="p-2">06/12/2020</td>
-						<td className="p-2">&#8369;580</td>
-						<td className="p-2">completed</td>
-						<td className="p-2">
-							<button>view</button>
-						</td>
-					</tr>
-					<tr className="border-b-2">
-						<td className="p-2">06/12/2020</td>
-						<td className="p-2">&#8369;580</td>
-						<td className="p-2">completed</td>
-						<td className="p-2">
-							<button>view</button>
-						</td>
-					</tr>
+					{
+						orders.orders.map( order => (
+							<tr key={order._id}>
+								<td>{order.createdAt}</td>
+								<td>&#8369; {order.total}</td>
+								<td>{ order.completed ? 'true' : 'false'}</td>
+								<td>
+									<Link to={`/admin/orders/${order._id}`}>view</Link>
+								</td>
+							</tr>
+						))
+					}
 				</tbody>
 
 			</table>
+
+			<Pagination data={orders} change_url={change_url} />
 		</div>
 	)
 }
 
-export default connect(null, {getOrders})(Orders)
+const mapStateToProps = state => ({
+	orders: state.orders,
+})
+
+export default connect(mapStateToProps, {getOrders, change_url})(Orders)
