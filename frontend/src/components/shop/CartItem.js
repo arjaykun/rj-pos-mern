@@ -9,7 +9,7 @@ const CartItem = ({item, removeItem, changeQty}) => {
 	}, [item.qty])
 
 	const handleChange = e => {
-		setQty(+e.target.value);
+		setQty(e.target.value);
 	}
 
 	const handleKeyPress =  e => {

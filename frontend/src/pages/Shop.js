@@ -104,7 +104,7 @@ const Shop = ({loading, getShopItems, categories, allItems, getAllItems, cartTot
 							<div className="grid grid-cols-3 py-2">
 							{	
 								items.map( item => (
-									<ItemBox item={item} key={item._id} color={colors[item.category]} loading="cartLoading" />
+									<ItemBox item={item} key={item._id} color={colors[item.category]} loading={cartLoading} />
 								))		
 							}
 							</div>

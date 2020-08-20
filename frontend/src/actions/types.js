@@ -24,3 +24,5 @@ export const SHOP_ITEMS_LOADING = 'SHOP_ITEMS_LOADING'
 export const GET_SHOP_ITEMS = 'GET_SHOP_ITEMS'
 export const GET_ALL_ITEMS = 'GET_ALL_ITEMS'
 export const SEARCH_ITEM = 'SEARCH_ITEM'
+// order action types
+export const ADD_ORDER = 'ADD_ORDER'
