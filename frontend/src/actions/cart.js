@@ -56,9 +56,7 @@ export const changeQty = (itemId, newQty) => {
 		const selected =  findItem(cart, itemId)
 		
 		if(selected) {
-			const item = {...selected.item, qty: newQty, subtotal: Number((selected.item.price * newQty).toFixed(2))}
-
-			console.log(item)
+			const item = {...selected.item, qty: +newQty, subtotal: Number((selected.item.price * newQty).toFixed(2))}
 			const newItems = [item, ...selected.items]
 
 			dispatch({ type: CHANGE_ITEM_QTY, payload: { 

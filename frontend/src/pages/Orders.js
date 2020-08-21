@@ -46,7 +46,7 @@ const Orders = ({getOrders, orders, loading, change_url}) => {
 								<td>&#8369; {order.total}</td>
 								<td>{ order.completed ? 'true' : 'false'}</td>
 								<td>
-									<Link to={`/admin/orders/${order._id}`}>view</Link>
+									<Link to={{pathname:`/admin/orders/${order._id}`, data:order}} >view</Link>
 								</td>
 							</tr>
 						))

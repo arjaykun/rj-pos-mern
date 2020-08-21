@@ -46,7 +46,7 @@ router
 		if(order) {
 			return res.status(200).json({
 				orders: {
-					_id: order.id,
+					...order,
 					items: order.items.map(doc => ({
 						item: {
 							_id: doc.item.id,
@@ -56,11 +56,7 @@ router
 						},
 						qty: doc.qty,
 						subtotal: doc.subtotal,
-					})),
-					discount: order.discount,
-					total: order.total,
-					createdAt: order.createdAt,
-					upatedAt: order.upatedAt
+					}))
 				}
 			})
 		} 

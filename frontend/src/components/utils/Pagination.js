@@ -33,7 +33,7 @@ const Pagination = ({data, change_url}) => {
 				>
 					{
 						pages().map( num => (
-							<option value={num}>{num}</option>
+							<option value={num} key={num}>{num}</option>
 						))
 					}
 
