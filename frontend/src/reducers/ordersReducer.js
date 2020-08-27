@@ -10,9 +10,9 @@ const initialState = {
 	prevPage: null,
 	queries: { 
 		page: 1,
-		limit: 10,
-		sort_by: '',
-		asc: 1, // 1 for asc , -1 for desc
+		limit: 20,
+		sort_by: 'createdAt',
+		asc: -1, // 1 for asc , -1 for desc
 		start: '',
 		end: '',
 		filter_by: '',

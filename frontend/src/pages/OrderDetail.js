@@ -1,4 +1,5 @@
 import React from 'react';
+import { MdCheckCircle, MdRemoveCircle } from 'react-icons/md';
 
 const OrderDetail = ({match, history, location}) => {
 	const order = location.data
@@ -19,11 +20,15 @@ const OrderDetail = ({match, history, location}) => {
 					>
 						Back to orders
 				</button>	
-				<h1>
+				<h1 className="flex items-center">
 					{order.createdAt}
+					{ order.completed ? 
+						<MdCheckCircle className="text-green-400 ml-2 text-lg" /> :
+						<MdRemoveCircle className="text-red-400 ml-2 text-lg" />
+					}
 				</h1>
 			</div>
-
+			
 			<table className="table-auto w-full">
 				<thead >
 					<tr className="bg-gray-200 text-sm text-left uppercase">
