@@ -1,5 +1,6 @@
 import React from 'react';
 import { MdCheckCircle, MdRemoveCircle } from 'react-icons/md';
+import moment from 'moment'
 
 const OrderDetail = ({match, history, location}) => {
 	const order = location.data
@@ -21,7 +22,7 @@ const OrderDetail = ({match, history, location}) => {
 						Back to orders
 				</button>	
 				<h1 className="flex items-center">
-					{order.createdAt}
+					{ moment(order.createdAt).format('MM/DD/YYYY hh:mm A') }
 					{ order.completed ? 
 						<MdCheckCircle className="text-green-400 ml-2 text-lg" /> :
 						<MdRemoveCircle className="text-red-400 ml-2 text-lg" />

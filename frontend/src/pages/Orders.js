@@ -7,7 +7,7 @@ import { FaChevronCircleRight, FaSortUp, FaSortDown } from 'react-icons/fa';
 import Loading from '../components/utils/Loading';
 import Modal from '../components/utils/Modal';
 import FilterOrders from '../components/orders/FilterOrders';
-
+import moment from 'moment'
 
 const Orders = ({getOrders, orders, loading, change_url}) => {
 	
@@ -72,7 +72,7 @@ const Orders = ({getOrders, orders, loading, change_url}) => {
 					{
 						orders.orders.map( (order, index) => (
 							<tr key={order._id} className={`${index%2 !== 0? 'bg-gray-200' : null} text-xs`}>
-								<td className="py-2">{order.createdAt}</td>
+								<td className="py-2">{ moment(order.createdAt).format('MM/DD/YY hh:mm A')}</td>
 								<td className="py-2">{ order._id }</td>
 								<td className="py-2">&#8369; {order.total}</td>
 								<td className="py-2">
