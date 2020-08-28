@@ -3,8 +3,9 @@ import OrderSummary from './OrderSummary';
 import OrderForm from './OrderForm'
 import { connect } from 'react-redux';
 import { clearCart, removeItemInCart, changeQty } from '../../actions/cart';
+import { addOrder } from '../../actions/orders';
 
-const Cart = ({hideModal,cart, clearCart, removeItemInCart, changeQty}) => {
+const Cart = ({hideModal,cart, clearCart, removeItemInCart, changeQty, addOrder}) => {
 	
 	const [isOrder, setIsOrder] = useState(false)	
 	const [ pay, setPay ] = useState('')
@@ -20,8 +21,27 @@ const Cart = ({hideModal,cart, clearCart, removeItemInCart, changeQty}) => {
 		if(!isOrder) 
 			return setIsOrder(true)
 
-		if(+pay >= cart.total)
-			alert(+pay -cart.total)
+		if(+pay >= cart.total) {
+			const change = (+pay - cart.total)
+			const result = addOrder({ 
+				items: cart.orderItems, 
+				total: cart.total, 
+				discount: cart.discount, 
+				payment: pay,
+				change: Number(change.toFixed(2)),
+				isDine: cart.dineIn
+			})
+
+			if(result){
+				alert('Order completed!')
+				clearCart()
+				setPay(0)
+				setIsOrder(false)
+				hideModal()
+			}
+			else
+				alert("Order failed!") 
+		}	
 		else
 			alert("Invalid Payment")
 	}
@@ -64,7 +84,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-	clearCart, removeItemInCart, changeQty
+	clearCart, removeItemInCart, changeQty, addOrder
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart)

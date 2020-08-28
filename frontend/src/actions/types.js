@@ -16,6 +16,7 @@ export const CLEAR_MESSAGE = 'CLEAR_MESSAGE'
 export const UNLOADING = 'UNLOADING'
 // pagination action types
 export const CHANGE_ITEMS_URL = 'CHANGE_ITEMS_URL'
+export const CHANGE_ORDERS_URL = 'CHANGE_ORDERS_URL'
 // categories action types
 export const GET_CATEGORIES = 'GET_CATEGORIES'
 export const CATEGORIES_LOADING = 'CATEGORIES_LOADING'
@@ -25,4 +26,6 @@ export const GET_SHOP_ITEMS = 'GET_SHOP_ITEMS'
 export const GET_ALL_ITEMS = 'GET_ALL_ITEMS'
 export const SEARCH_ITEM = 'SEARCH_ITEM'
 // order action types
+export const GET_ORDERS = 'GET_ORDERS'
 export const ADD_ORDER = 'ADD_ORDER'
+export const ORDER_LOADING = 'ORDER_LOADING'

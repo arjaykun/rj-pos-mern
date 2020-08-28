@@ -1,16 +1,17 @@
-import React, {useState} from 'react';
+import React from 'react';
 
 const Pagination = ({data, change_url}) => {
 
-	const [ page, setPage ] = useState(data.page)
-
 	const handleChange = e => {
-		setPage(e.target.value)
+		change_url({page:e.target.value})
 	}
 
-	const handleKeyPress = e => {
-		if(e.key === "Enter")
-			change_url({ page })
+	const pages = () => {
+		let output = [];
+		for( let i = 1; i <= data.totalPages; i++) {
+			output.push(i)
+		}
+		return output;
 	}
 
 	return (
@@ -25,12 +26,18 @@ const Pagination = ({data, change_url}) => {
 			</button>
 			<div className="text-base tracking-wider">
 				page 
-				<input 
-					className="border w-8 px-1 bg-red-100"
+				<select
+					className="border w-12 px-1 bg-red-100"
 					onChange={handleChange}
-					onKeyPress={handleKeyPress}
-					value={page}
-				/>
+					value={data.page}
+				>
+					{
+						pages().map( num => (
+							<option value={num} key={num}>{num}</option>
+						))
+					}
+
+				</select>
 				of { data.totalPages }
 			</div>
 			<button 

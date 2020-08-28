@@ -1,6 +1,8 @@
 import { GET_CATEGORIES, CATEGORIES_LOADING, } from './types';
 import axios from 'axios';
 
+// const base_url = process.env.BASE_URL || "http://localhost:8000"
+
 export const getCategories = () => {
 	return async dispatch => {
 		dispatch({ type: CATEGORIES_LOADING })

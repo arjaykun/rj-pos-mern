@@ -5,6 +5,7 @@ import Dashboard from './Dashboard';
 import Items from './Items';
 import Orders from './Orders';
 import Users from './Users';
+import OrderDetail from './OrderDetail';
 
 const Admin = () => {
 	return (
@@ -14,7 +15,8 @@ const Admin = () => {
 				<Switch>
 					<Route exact path="/admin" component={Dashboard} />
 					<Route exact path="/admin/items" component={Items} />
-					<Route path="/admin/orders" component={Orders} />
+					<Route exact path="/admin/orders" component={Orders} />
+					<Route exact path="/admin/orders/:id" component={OrderDetail} />
 					<Route path="/admin/users" component={Users} />
 				</Switch>
 			</Router>

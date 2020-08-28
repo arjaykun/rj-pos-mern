@@ -1,15 +1,17 @@
 import { GET_ITEMS, ADD_ITEM, ITEMS_LOADING, DELETE_ITEM, UPDATE_ITEM, CHANGE_ITEMS_URL, ADD_MESSAGE, UNLOADING } from './types.js';
 import axios from 'axios';
 
+const base_url = process.env.BASE_URL || "http://localhost:8000"
+
 export const getItems = url => {
 	return async dispatch => {
 		dispatch({type: ITEMS_LOADING});
 
 		try {	
-			const items = await axios.get(url);
+			const items = await axios.get(base_url + url);
 			dispatch({ type: GET_ITEMS, payload: items.data })
 		} catch(error) {
-			window.location.href = '/error'
+			// window.location.href = '/error'
 		}
 		
 	}
@@ -20,7 +22,7 @@ export const addItem = item => {
 		dispatch({type: ITEMS_LOADING })
 		
 		try {
-			const result = await axios.post('http://localhost:8000/items', item)
+			const result = await axios.post(base_url + '/items', item)
 			dispatch({ type: ADD_ITEM, payload:result.data.item })
 			dispatch({ type: ADD_MESSAGE, payload: {message: "Success! Item added successfully.", error:false}})
 		} catch(error) {
@@ -35,7 +37,7 @@ export const deleteItem = itemId => {
 	return async dispatch => {
 		dispatch({type: ITEMS_LOADING});
 		try {
-			await axios.delete(`http://localhost:8000/items/${itemId}`)
+			await axios.delete(`${base_url}/items/${itemId}`)
 			dispatch({type: DELETE_ITEM, payload: itemId})
 			dispatch({ type: ADD_MESSAGE, payload:  {message: "Success! Item deleted successfully.", error:false} })
 		} catch(error) {
@@ -49,7 +51,7 @@ export const updateItem = item => {
 		dispatch({type: ITEMS_LOADING});
 		
 		try {
-			await axios.patch(`http://localhost:8000/items/${item._id}`, item)
+			await axios.patch(`${base_url}/items/${item._id}`, item)
 			dispatch({type: UPDATE_ITEM, payload:item})
 			dispatch({ type: ADD_MESSAGE, payload:  {message: "Success! Item updated successfully.", error:false} })
 		} catch(error) {

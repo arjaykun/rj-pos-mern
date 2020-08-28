@@ -2,7 +2,9 @@ const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate-v2');
 
 const orderItemSchema = new mongoose.Schema({
-	item: { type: mongoose.ObjectId, ref: "Item"},
+	_id: mongoose.Schema.ObjectId,
+	name: String,
+	price: Number,
 	qty: Number,
 	discount: Number,
 	subtotal: Number,
@@ -11,7 +13,20 @@ const orderItemSchema = new mongoose.Schema({
 
 const orderSchema = new mongoose.Schema({
 	items: [orderItemSchema],
+	order_id: {
+		type: String,
+		required: true,
+	},
+	payment: {
+		type: Number,
+		required: true,
+	},
 
+	change: {
+		type: Number,
+		required: true,
+	},
+	
 	discount: {
 		type: Number,
 		required: true,

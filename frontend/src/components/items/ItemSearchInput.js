@@ -6,7 +6,7 @@ const ItemSearchInput = ({searchItem, searchText, clearSearch}) => {
 
 	const handleInput = (e) => {
 		if(e.key === 'Enter')
-			searchItem({search_by: 'name', search })
+			searchItem({search_by: 'name', search, page: 1 })
 	}
 
 	return (
@@ -20,7 +20,11 @@ const ItemSearchInput = ({searchItem, searchText, clearSearch}) => {
 					onChange={ (e) => setSearch(e.target.value)  }
 					onKeyPress={handleInput}
 				/>
-				<span className="absolute top-0 right-0 text-2xl mt-4 mr-2 text-gray-700"><MdSearch /></span>
+				<span 
+					className="absolute top-0 right-0 text-2xl mt-4 mr-2 text-gray-700 cursor-pointer"
+					onClick={() => searchItem({search_by: 'name', search, page: 1 }) }
+					><MdSearch />
+				</span>
 			</div>
 			<div>
 			{

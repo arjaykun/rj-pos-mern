@@ -4,8 +4,7 @@ const initialState = {
 	orderItems: [],
 	discount: 0,
 	total: 0,
-	payment:0,
-	dineIn: false,
+	dineIn: true,
 	loading: false
 }
 
