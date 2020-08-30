@@ -32,6 +32,15 @@ export const addCategory = category => {
 export const updateCategory = category => {
 	return async dispatch => {
 		dispatch({ type: CATEGORIES_LOADING })
+		try {
+			await axios.patch(base_url + "/categories/" + category._id, category)
+			dispatch({ type: UPDATE_CATEGORY, payload: category })	
+			dispatch({ type: ADD_MESSAGE, payload: {message: "Success! Category updated successfully.", error:false}})
+		
+		} catch(error) {
+			 dispatch({ type: ADD_MESSAGE, payload: { message: error.response.data.msg, error: true}})
+			 dispatch({ type: UNLOADING })
+		}
 	}
 }
 
@@ -41,8 +50,9 @@ export const deleteCategory = category => {
 		try {
 			await axios.delete(base_url + "/categories/" + category)
 			dispatch({ type: DELETE_CATEGORY, payload: category})
+			dispatch({ type: ADD_MESSAGE, payload: {message: "Success! Category deleted successfully.", error:false}})
 		} catch(error) {
-			console.error(error.response.data)
+			window.location.url = './error';
 		}
 	}
 }

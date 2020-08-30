@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { MdSave } from "react-icons/md";
-import ReactLoading from 'react-loading';
 import AlertMessage from '../utils/AlertMessage';
 
 const ItemForm = ({operation, action, loading, hideModal, itemData, messages, categories}) => {
@@ -70,7 +69,7 @@ const ItemForm = ({operation, action, loading, hideModal, itemData, messages, ca
 				</label>
 				<div className="relative mb-3">
 	        <select 
-	        	className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state"
+	        	className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-2 pr-8 rounded-lg leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state"
 	        	value={item.category}
 						name="category"
 						onChange={handleChange} 
@@ -92,11 +91,7 @@ const ItemForm = ({operation, action, loading, hideModal, itemData, messages, ca
 					type="submit"
 					disabled={loading}
 					>
-					{loading ?   
-						<div className="w-full flex justify-center"><ReactLoading type={'spokes'} color="#fff" height="15px" width="15px" /></div> 
-						: 
 						<span  className="w-full flex justify-center"><MdSave /></span> 
-					}
 				</button>
 
 			</form>

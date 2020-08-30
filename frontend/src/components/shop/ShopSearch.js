@@ -8,7 +8,6 @@ const ShopSearch = ({hideModal, items, setItems, showSearch}) => {
 	
 	useEffect( ()=> {
 		if(showSearch) {
-			console.log('input ref')
 			inputRef.current.focus()
 		}
 	}, [showSearch])

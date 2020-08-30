@@ -2,27 +2,35 @@ import React, {useState, useEffect} from 'react';
 import { MdSave } from "react-icons/md";
 import AlertMessage from '../utils/AlertMessage';
 import { connect } from 'react-redux';
-import { addCategory } from '../../actions/categories';
+import { addCategory, updateCategory } from '../../actions/categories';
 
 const colors = ['red', 'green', 'yellow', 'blue', 'gray', 'teal', 'indigo', 'purple', 'pink', 'orange'];
 
-const CategoryForm = ({operation, loading, addCategory, messages, hideModal}) => {
+const CategoryForm = ({operation, loading, addCategory, messages, hideModal, categoryData, updateCategory}) => {
 
-	const [ category, setCategory ] = useState({ name: '', color: ''})
+	const [ category, setCategory ] = useState({ _id: '', name: '', color: ''})
+
+	useEffect( () => {
+		setCategory(categoryData)
+	}, [categoryData])
 
 	useEffect( () => {
 		if(!loading && !messages.error) 
 			hideModal()
 		
 		return () => {
-			setCategory({ name: '', color: ''})
+			if(operation === 'add')
+				setCategory({ name: '', color: ''})
 		}
 		//eslint-disable-next-line
 	}, [loading])
 
 	const handleSubmit = e => {
 		e.preventDefault()
-		addCategory(category);
+		if(operation === 'add')
+			addCategory(category);
+		else if(operation === 'edit')
+			updateCategory(category)
 	}
 
 	const handleChange = e => {
@@ -54,7 +62,7 @@ const CategoryForm = ({operation, loading, addCategory, messages, hideModal}) =>
 				{/* color field */}
 				<div className="relative mb-3">
 	        <select 
-	        	className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state"
+	        	className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-2 pr-8 rounded-lg leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state"
 	        	value={category.color}
 						name="color"
 						onChange={handleChange} 
@@ -88,4 +96,4 @@ const mapStateToProps = state => ({
 	messages: state.messages
 })
 
-export default connect(mapStateToProps, { addCategory })(CategoryForm)
+export default connect(mapStateToProps, { addCategory, updateCategory })(CategoryForm)

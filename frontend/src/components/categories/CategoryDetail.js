@@ -1,7 +1,7 @@
 import React from 'react';
 import { MdModeEdit, MdDelete, MdCheckCircle} from 'react-icons/md'
 
-const CategoryDetail = ({category, deleteCategory}) => {
+const CategoryDetail = ({category, deleteCategory, updateCategory}) => {
 	return (
 		<div 
 			className={`bg-${category.color}-500 py-3 px-2 my-1 rounded-lg flex items-center justify-between`}
@@ -14,7 +14,7 @@ const CategoryDetail = ({category, deleteCategory}) => {
 			<div className="flex justify-center items-center">
 				<MdModeEdit 
 					className="mr-1 text-xl text-blue-900 cursor-pointer"
-					// onClick={ () => editItem(item) }
+					onClick={ () => updateCategory(category) }
 				/>
 				<MdDelete 
 					className="text-xl text-red-900 cursor-pointer"

@@ -5,13 +5,16 @@ import Confirmation from '../components/utils/Confirmation';
 import Loading from '../components/utils/Loading';
 import CategoryForm from '../components/categories/CategoryForm';
 import CategoryDetail from '../components/categories/CategoryDetail';
+import AlertMessage from '../components/utils/AlertMessage';
 import { getCategories, deleteCategory } from '../actions/categories';
+import { clear_message } from '../actions/messages';
 
-const Categories = ({categories, loading, getCategories, deleteCategory}) => {
+const Categories = ({categories, loading, getCategories, deleteCategory, clear_message, messages}) => {
 
 	const [ showModal, setShowModal ] = useState(false)
 	const [ showConfirmModal, setShowConfirmModal ] =  useState(false)
 	const [ category, setCategory ] = useState({ _id: '', name: '', color: ''})
+	const [ operation, setOperation ] = useState('add')
 
 	useEffect( () => {
 		getCategories()
@@ -19,15 +22,38 @@ const Categories = ({categories, loading, getCategories, deleteCategory}) => {
 		//eslint-disable-next-line
 	}, []) 
 
+	const handleAdd = () => {
+		setOperation("add")
+		setShowModal(true)
+	}
+
+	const handleUpdate = data => {
+		setCategory(data)
+		setOperation("edit")
+		setShowModal(true)
+	}
+
 	const handleDelete = data => {
 		setCategory(data)
 		setShowConfirmModal(true)
 	}
 
+	const hideModal = () => {
+		setShowModal(false);
+		if(messages.message)
+			clear_message();
+	} 
+
+
 	return (
 		<div className="px-2">	
-			<Modal show={showModal} hideModal={ () => setShowModal(false) } >
-				<CategoryForm operation={"add"} loading={loading} hideModal={ () => setShowModal(false) } />
+			<Modal show={showModal} hideModal={hideModal} >
+				<CategoryForm 
+					operation={operation} 
+					loading={loading} 
+					hideModal={hideModal}
+					categoryData={category}
+				 />
 			</Modal>
 
 			<Modal show={showConfirmModal} hideModal={ ()=>setShowConfirmModal(false) } >
@@ -49,12 +75,14 @@ const Categories = ({categories, loading, getCategories, deleteCategory}) => {
 				<div>
 					<button
 						className="bg-gray-800 p-2 rounded-lg text-gray-100 hover:bg-gray-700"
-						onClick={ () => setShowModal(true) }
+						onClick={ handleAdd }
 					>
 						Add Category
 					</button>
 				</div>
 			</div>
+
+			{ messages.message && !messages.error ? <AlertMessage messages={messages} /> : ''}
 
 			{
 				categories.map( category => (
@@ -62,6 +90,7 @@ const Categories = ({categories, loading, getCategories, deleteCategory}) => {
 						category={category} 
 						key={category._id} 
 						deleteCategory={handleDelete}
+						updateCategory={handleUpdate}
 					/>
 				))
 			}
@@ -72,6 +101,7 @@ const Categories = ({categories, loading, getCategories, deleteCategory}) => {
 const mapStateToProps = state => ({
 	categories: state.categories.categories,
 	loading: state.categories.loading,
+	messages: state.messages,
 })
 
-export default connect(mapStateToProps, {getCategories, deleteCategory})(Categories)
+export default connect(mapStateToProps, {getCategories, deleteCategory, clear_message})(Categories)

@@ -84,7 +84,7 @@ router
 	})
 	.patch(isAdmin, async (req,res) => {
 		const { name, color } = req.body;
-		const option = {omitUndefined:true};
+		const option = {omitUndefined:true, runValidators: true};
 		try{
 			await Category.updateOne({ _id:req.params.id},
 				{ $set: {name, color} }, option);

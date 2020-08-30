@@ -25,6 +25,12 @@ const categoriesReducer = (state = initialState, action) => {
 				loading: false,
 				categories: state.categories.filter( category => category._id !== action.payload)
 			}
+		case UPDATE_CATEGORY:
+			return {
+				...state,
+				loading: false,
+				categories: [{...action.payload, isNew: true}, ...state.categories.filter( category => category._id !== action.payload._id)]
+			}
 		default:
 			return state;
 	}
