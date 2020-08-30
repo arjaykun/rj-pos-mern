@@ -20,6 +20,9 @@ export const CHANGE_ORDERS_URL = 'CHANGE_ORDERS_URL'
 // categories action types
 export const GET_CATEGORIES = 'GET_CATEGORIES'
 export const CATEGORIES_LOADING = 'CATEGORIES_LOADING'
+export const ADD_CATEGORY = 'ADD_CATEGORY'
+export const UPDATE_CATEGORY = 'UPDATE_CATEGORY'
+export const DELETE_CATEGORY = 'DELETE_CATEGORY'
 // shop action types
 export const SHOP_ITEMS_LOADING = 'SHOP_ITEMS_LOADING'
 export const GET_SHOP_ITEMS = 'GET_SHOP_ITEMS'

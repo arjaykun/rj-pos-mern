@@ -9,9 +9,8 @@ const categorySchema = new mongoose.Schema({
 	
 	color: {
 		type: String,
-		default: 'black',
 		lowercase: true, 
-		enum: ['black', 'red', 'green', 'yellow', 'blue', 'gray', 'skyblue']
+		enum: ['red', 'green', 'yellow', 'blue', 'gray', 'teal', 'indigo', 'purple', 'pink', 'orange']
 	}
 })
 

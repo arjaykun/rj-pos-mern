@@ -31,7 +31,7 @@ const ItemForm = ({operation, action, loading, hideModal, itemData, messages, ca
 		e.persist();
 		setItem( prevItem => ({ ...prevItem, [e.target.name]:e.target.value }) )
 	}
-
+ 
 	return (
 		<div>
 			<h1 className="text-xl pb-3 text-gray-700">

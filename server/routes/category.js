@@ -42,7 +42,7 @@ router.route('/')
 		try {
 			const { name, color } = req.body;
 			const result = await Category.create({ name, color });
-			res.json({ msg: 'Category created.' })
+			res.json({ msg: 'Category created.', category: result})
 		} catch({message}) {
 			res.status(500).json({ msg: message})
 		}
