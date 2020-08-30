@@ -10,7 +10,7 @@ const Confirmation = ({title, text, yes, no, data}) => {
 
 	return (
 		<div className="text-gray-700"> 
-			<h1 className="text-2xl font-bold uppercase border-b-2 border-gray-500">{title}</h1>
+			<h1 className="text-2xl font-bold uppercase">{title}</h1>
 			<h1 className="text-base py-2 my-2 ">{text}</h1>
 			<div className="flex justify-end items-center">
 

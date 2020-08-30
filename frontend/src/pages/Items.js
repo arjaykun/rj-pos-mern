@@ -70,7 +70,6 @@ const Items = ({items, messages, getItems, addItem, deleteItem, updateItem, clea
 					hideModal={ hideModal} 
 					itemData={item}
 					categories={categories.categories}
-					getCategories={getCategories}
 					messages={messages}
 				/>
 			</Modal>
@@ -86,7 +85,7 @@ const Items = ({items, messages, getItems, addItem, deleteItem, updateItem, clea
 				/>
 			</Modal>
 
-			{ items.loading && categories.loading ? <Loading /> : null}
+			{ items.loading || categories.loading ? <Loading /> : null}
 			
 			<div className="px-2">				
 				<div 
@@ -94,11 +93,6 @@ const Items = ({items, messages, getItems, addItem, deleteItem, updateItem, clea
 				>
 					<span className="text-xl uppercase font-bold">Item List</span>
 					<div>
-						<button
-							className="bg-green-800 p-2 rounded-lg text-gray-100 hover:bg-green-700"
-						>
-							Categories
-						</button>
 						<button
 							className="bg-gray-800 p-2 rounded-lg text-gray-100 hover:bg-gray-700"
 							onClick={ handleAdd }

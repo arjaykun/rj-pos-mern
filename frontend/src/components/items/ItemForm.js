@@ -3,7 +3,7 @@ import { MdSave } from "react-icons/md";
 import ReactLoading from 'react-loading';
 import AlertMessage from '../utils/AlertMessage';
 
-const ItemForm = ({operation, action, loading, hideModal, itemData, messages, categories, getCategories}) => {
+const ItemForm = ({operation, action, loading, hideModal, itemData, messages, categories}) => {
 		
 	const [item, setItem] = useState({name:'', price: '', category: ''});
 	const inputRef = useRef();
@@ -34,7 +34,7 @@ const ItemForm = ({operation, action, loading, hideModal, itemData, messages, ca
 
 	return (
 		<div>
-			<h1 className="text-xl pb-3 border-b-2 border-red-900 text-gray-700">
+			<h1 className="text-xl pb-3 text-gray-700">
 				{ operation === 'add'? 'Add New Item' : 'Edit Item'}
 			</h1>
 			{ messages.error ? <AlertMessage messages={messages} /> : null}
