@@ -40,7 +40,7 @@ router
 		
 		try { 
 			const user = await User.create({ name, email, password: hash, userType, });
-			res.status(201).json({ msg: 'User created' })
+			res.status(201).json({ msg: 'User created', user})
 		} catch({message}) {
 			res.status(400).json({ msg: message })
 		}

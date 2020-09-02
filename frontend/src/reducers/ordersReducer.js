@@ -33,8 +33,7 @@ const ordersReducer = (state = initialState, action) => {
 			  count: action.payload.count,
 				page: action.payload.page,
 				totalPages: action.payload.totalPages, 
-				nextPage: action.payload.nextPage,
-				
+				nextPage: action.payload.nextPage,				
 				prevPage: action.payload.prevPage,
 			  loading: false
 			}

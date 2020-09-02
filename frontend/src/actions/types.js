@@ -17,6 +17,7 @@ export const UNLOADING = 'UNLOADING'
 // pagination action types
 export const CHANGE_ITEMS_URL = 'CHANGE_ITEMS_URL'
 export const CHANGE_ORDERS_URL = 'CHANGE_ORDERS_URL'
+export const CHANGE_USERS_URL = 'CHANGE_USERS_URL'
 // categories action types
 export const GET_CATEGORIES = 'GET_CATEGORIES'
 export const CATEGORIES_LOADING = 'CATEGORIES_LOADING'
@@ -32,3 +33,7 @@ export const SEARCH_ITEM = 'SEARCH_ITEM'
 export const GET_ORDERS = 'GET_ORDERS'
 export const ADD_ORDER = 'ADD_ORDER'
 export const ORDER_LOADING = 'ORDER_LOADING'
+// users action types
+export const GET_USERS = 'GET_USERS'
+export const ADD_USER = 'ADD_USER'
+export const USER_LOADING = 'USER_LOADING'

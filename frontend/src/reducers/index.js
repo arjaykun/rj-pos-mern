@@ -5,6 +5,7 @@ import messagesReducer from './messagesReducer';
 import shopReducer from './shopReducer';
 import categoriesReducer from './categoriesReducer';
 import ordersReducer from './ordersReducer';
+import usersReducer from './usersReducer';
 
 export default combineReducers({
 	items: ItemsReducer,
@@ -13,4 +14,5 @@ export default combineReducers({
 	shop: shopReducer,
 	categories: categoriesReducer,
 	orders: ordersReducer,
+	users: usersReducer,
 });
