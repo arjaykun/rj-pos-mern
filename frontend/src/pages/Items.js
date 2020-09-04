@@ -34,13 +34,16 @@ const Items = ({items, messages, getItems, addItem, deleteItem, updateItem, clea
 	}, [])
 
 
-	const handleAdd = () => {
+	const handleAdd = () => {		
+		hideMessage()
+		setItem({ name: '', price: '', category: ''})
 		setAction(() => addItem);
 		setOperation('add');
 		setShowModal(true);
 	}
 
 	const handleEdit = data => {
+		hideMessage()
 		setAction(() => updateItem);
 		setItem(data);
 		setOperation('edit');
@@ -48,9 +51,8 @@ const Items = ({items, messages, getItems, addItem, deleteItem, updateItem, clea
 	}
 
 	const hideModal = () => {
-		setItem({ name: '', price: '', category: ''})
 		setShowModal(false);
-		if(messages.message)
+		if(messages.error)
 			clear_message();
 	} 
 
@@ -58,6 +60,11 @@ const Items = ({items, messages, getItems, addItem, deleteItem, updateItem, clea
 		setOperation('delete')
 		setItem(data);
 		setShowConfirmModal(true)
+	}
+
+	const hideMessage = () =>{
+		if(messages.message)
+			clear_message();
 	}
 
 	return (
@@ -108,8 +115,9 @@ const Items = ({items, messages, getItems, addItem, deleteItem, updateItem, clea
 					clearSearch={ () => change_url({search_by:'', search:''})} 
 				/>
 			
-				{ messages.message && !messages.error ? <AlertMessage messages={messages} /> : ''}
-
+				{ messages.message ? 
+					<AlertMessage messages={messages} /> : null
+				}
 				{  
 					items.items.length > 0 ?
 						items.items.map( item => (

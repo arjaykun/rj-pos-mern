@@ -1,6 +1,7 @@
-import { GET_CATEGORIES, CATEGORIES_LOADING, ADD_CATEGORY, DELETE_CATEGORY, UPDATE_CATEGORY, ADD_MESSAGE, UNLOADING } from './types';
+import { GET_CATEGORIES, CATEGORIES_LOADING, ADD_CATEGORY, DELETE_CATEGORY, UPDATE_CATEGORY } from './types';
 
 import axios from 'axios';
+import { addErrorMessage, addSuccessMessage } from './messages';
 
 const base_url = process.env.BASE_URL || "http://localhost:8000"
 
@@ -21,11 +22,10 @@ export const addCategory = category => {
 		dispatch({ type: CATEGORIES_LOADING })
 		try {
 			const result = await axios.post(base_url + "/categories", category);
+			addSuccessMessage(dispatch, "Category added successfully.")
 			dispatch({ type: ADD_CATEGORY, payload:result.data.category })
-			dispatch({ type: ADD_MESSAGE, payload: {message: "Success! Category added successfully.", error:false}})
 		} catch (error) {
-			dispatch({ type: ADD_MESSAGE, payload: { message: error.response.data.msg, error: true}})
-			dispatch({ type: UNLOADING })
+			addErrorMessage(dispatch, error)
 		}
 	}
 }
@@ -35,12 +35,10 @@ export const updateCategory = category => {
 		dispatch({ type: CATEGORIES_LOADING })
 		try {
 			await axios.patch(base_url + "/categories/" + category._id, category)
-			dispatch({ type: UPDATE_CATEGORY, payload: category })	
-			dispatch({ type: ADD_MESSAGE, payload: {message: "Success! Category updated successfully.", error:false}})
-		
+			addSuccessMessage(dispatch, "Category updated successfully.")
+			dispatch({ type: UPDATE_CATEGORY, payload: category })			
 		} catch(error) {
-			 dispatch({ type: ADD_MESSAGE, payload: { message: error.response.data.msg, error: true}})
-			 dispatch({ type: UNLOADING })
+			 addErrorMessage(dispatch, error)
 		}
 	}
 }
@@ -50,8 +48,8 @@ export const deleteCategory = category => {
 		dispatch({ type: CATEGORIES_LOADING })
 		try {
 			await axios.delete(base_url + "/categories/" + category)
+			addSuccessMessage(dispatch, "Category deleted successfully.")
 			dispatch({ type: DELETE_CATEGORY, payload: category})
-			dispatch({ type: ADD_MESSAGE, payload: {message: "Success! Category deleted successfully.", error:false}})
 		} catch(error) {
 			window.location.url = './error';
 		}

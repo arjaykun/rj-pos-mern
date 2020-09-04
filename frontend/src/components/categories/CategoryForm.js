@@ -17,11 +17,7 @@ const CategoryForm = ({operation, loading, addCategory, messages, hideModal, cat
 	useEffect( () => {
 		if(!loading && !messages.error) 
 			hideModal()
-		
-		return () => {
-			if(operation === 'add')
-				setCategory({ name: '', color: ''})
-		}
+
 		//eslint-disable-next-line
 	}, [loading])
 

@@ -10,8 +10,10 @@ const OrderForm = ({total, load, pay, setPay, placeOrder}) => {
 	}, [load]) 
 
 	const handleKeyPress = e => {
-		if(e.key === "Enter")
+		if(e.key === "Enter"){
 				placeOrder()
+		}
+				
 	}
 
 	return (

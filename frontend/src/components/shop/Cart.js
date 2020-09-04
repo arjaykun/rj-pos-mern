@@ -21,7 +21,7 @@ const Cart = ({hideModal,cart, clearCart, removeItemInCart, changeQty, addOrder}
 		if(!isOrder) 
 			return setIsOrder(true)
 
-		if(+pay >= cart.total) {
+		if(+pay >= cart.total && cart.orderItems.length > 0) {
 			const change = (+pay - cart.total)
 			const result = addOrder({ 
 				items: cart.orderItems, 
@@ -43,7 +43,7 @@ const Cart = ({hideModal,cart, clearCart, removeItemInCart, changeQty, addOrder}
 				alert("Order failed!") 
 		}	
 		else
-			alert("Invalid Payment")
+			alert("Order Failed")
 	}
 
 	return (

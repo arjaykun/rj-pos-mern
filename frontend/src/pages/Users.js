@@ -1,17 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux'
-import { getUsers, change_url } from '../actions/users'
+import { getUsers, change_url, deleteUser } from '../actions/users'
+import { clear_message } from '../actions/messages'
 import Modal from '../components/utils/Modal';
+import Confirmation from '../components/utils/Confirmation';
 import Loading from '../components/utils/Loading';
 import AlertMessage from '../components/utils/AlertMessage';
 import Pagination from '../components/utils/Pagination';
 import UserForm from '../components/users/UserForm';
-import { FaChevronCircleRight, FaSortUp, FaSortDown } from 'react-icons/fa';
+import UserDetail from '../components/users/UserDetail';
+import { FaSortUp, FaSortDown } from 'react-icons/fa';
 
-const Users = ({ getUsers, users, change_url }) => {
+const initialUser = { _id: '', name: '', email:'', userType: 'user', password: ''}
+const Users = ({ getUsers, users, change_url, messages, clear_message, deleteUser}) => {
+	
 	const {page, limit, search_by, search, sort_by, asc} = users.queries
 	const [showModal, setShowModal] = useState(false);
+	const [showConfirmModal, setShowConfirmModal] = useState(false);
 	const [sortNameAsc, setSortNameAsc] = useState(true);
+	const [user, setUser] = useState(initialUser)
+	const [ operation, setOperation ] = useState('add')
 
 	useEffect( () => {
 		getUsers(`/users?page=${page}&limit=${limit}&search_by=${search_by}&search=${search}&sort_by=${sort_by}&asc=${asc}`)
@@ -19,6 +27,9 @@ const Users = ({ getUsers, users, change_url }) => {
 	}, [users.queries])
 
 	const handleAdd = () => {
+		hideMessage()
+		setUser(initialUser)
+		setOperation("add")
 		setShowModal(true)
 	}
 
@@ -27,15 +38,50 @@ const Users = ({ getUsers, users, change_url }) => {
 		change_url({asc: sortNameAsc? -1 : 1})
 	}
 
+	const hideModal = () => {
+		setShowModal(false);
+		if(messages.error)
+			clear_message();
+	}
+
+	const handleDelete = data => {
+		setUser(data)
+		setShowConfirmModal(true)
+	} 
+
+	const handleUpdate = data=> {
+		hideMessage()
+		setUser(data)
+		setOperation("edit")
+		setShowModal(true)
+	}
+
+	const hideMessage = () =>{
+		if(messages.message)
+			clear_message();
+	}
+
 	return (
 		<div className="px-2">
-			<Modal show={showModal} hideModal={() => setShowModal(false)} >
+			<Modal show={showModal} hideModal={hideModal} >
 				<UserForm 
-					operation={"add"} 
+					operation={operation} 
 					loading={users.loading} 
-					hideModal={() => setShowModal(false)}
-					// categoryData={category}
+					hideModal={hideModal}
+					messages={messages}
+					userData={user}
 				 />
+			</Modal>
+
+			<Modal show={showConfirmModal} hideModal={ ()=>setShowConfirmModal(false) } >
+				<Confirmation 
+					title="Delete User"
+					text={`Are you sure you want to delete this user?`}
+					yes={ deleteUser }
+					data={user._id}
+					loading={users.loading} 
+					no={ () => setShowConfirmModal(false) }
+				/>
 			</Modal>
 
 			{ users.loading ? <Loading /> : null}
@@ -56,12 +102,16 @@ const Users = ({ getUsers, users, change_url }) => {
 				</div>
 			</div>
 
-			<table className="table-auto w-full">
+			{ messages.message ? 
+				<AlertMessage messages={messages} /> : null
+			}
+
+			<table className="table-fixed w-full">
 				
 				<thead>
 					<tr className="bg-red-200 text-sm text-left uppercase">
 						<th 
-							className="font-bolder p-2 text-left flex items-center cursor-pointer" 
+							className="font-bolder p-2 text-left flex items-center cursor-pointer w-5/12" 
 							onClick={handleNameSort}
 						>
 							Name
@@ -73,27 +123,31 @@ const Users = ({ getUsers, users, change_url }) => {
 							}
 							
 						</th>
-						<th className="font-bolder p-2 text-left">E-mail</th>
-						<th className="font-bolder p-2 text-left">Position</th>
-						<th></th>
+						<th className="font-bolder p-2 text-left w-5/12">E-mail</th>
+						<th className="w-2/12"></th>
 					</tr>
 				</thead>
 				<tbody>
 					{
 						users.users.map( (user, index) => (
-							<tr key={user._id} className={`${index%2 !== 0? 'bg-gray-200' : null} text-sm`}>
-								<td className="py-2">{user.name}</td>
-								<td className="py-2">{user.email}</td>
-								<td className="py-2">{user.userType}</td>
-								<td className="py-2 cursor-pointer">
-									<FaChevronCircleRight />
-								</td>
+							<tr 
+								key={user._id} 
+								className={`${index%2 !== 0? 'bg-gray-200' : null} text-sm`}
+							>
+								<UserDetail 
+									user={user}
+									key={user._id} 
+									index={index} 
+									deleteUser={handleDelete}
+									updateUser={handleUpdate}
+								/>
 							</tr>
 						))
 					}
 				</tbody>
 
 			</table>
+
 			<Pagination data={users} change_url={change_url} />			
 		</div>
 	)
@@ -101,5 +155,6 @@ const Users = ({ getUsers, users, change_url }) => {
 
 const mapStateToProps = state => ({
 	users: state.users,
+	messages: state.messages,
 })
-export default connect(mapStateToProps, {getUsers, change_url})(Users)
+export default connect(mapStateToProps, {getUsers, change_url, clear_message, deleteUser})(Users)

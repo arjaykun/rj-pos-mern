@@ -15,14 +15,14 @@ const Confirmation = ({title, text, yes, no, data}) => {
 			<div className="flex justify-end items-center">
 
 				<button 
-					className="bg-red-700 px-5 py-1 text-white mx-1 rounded-lg uppercase font-bold text-base"
+					className="bg-red-700 px-5 py-1 text-white mx-1 rounded-lg uppercase font-bold text-base w-6/12"
 					onClick={ handleYes }
 				>
 					Yes
 				</button>
 
 				<button 
-					className="bg-gray-300 px-5 py-1  mx-1 rounded-lg uppercase font-bold text-base"
+					className="bg-gray-300 px-5 py-1  mx-1 rounded-lg uppercase font-bold text-base w-6/12"
 					onClick={ () => no() }
 				>
 					No

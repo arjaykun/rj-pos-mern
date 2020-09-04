@@ -1,4 +1,4 @@
-import { GET_USERS, USER_LOADING, ADD_USER, UNLOADING, CHANGE_USERS_URL} from '../actions/types'
+import { GET_USERS, USER_LOADING, ADD_USER, UNLOADING, CHANGE_USERS_URL, DELETE_USER, UPDATE_USER} from '../actions/types'
 
 const initialReducer = {
 	users: [],
@@ -40,6 +40,18 @@ const usersReducer = (state = initialReducer, action) => {
 				...state,
 				loading: false,
 				users: [{...action.payload, isNew: true}, ...state.users]
+			}
+		case DELETE_USER:
+			return {
+				...state,
+				loading: false,
+				users: state.users.filter( user => user._id !== action.payload)
+			}
+		case UPDATE_USER:
+			return {
+				...state,
+				loading: false,
+				users: [ {...action.payload, isNew: true}, ...state.users.filter( user => user._id !== action.payload)]
 			}
 		case USER_LOADING:
 			return { ...state, loading: true }

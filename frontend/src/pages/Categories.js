@@ -23,11 +23,14 @@ const Categories = ({categories, loading, getCategories, deleteCategory, clear_m
 	}, []) 
 
 	const handleAdd = () => {
+		hideMessage()
+		setCategory({ _id: '', name: '', color: ''})
 		setOperation("add")
-		setShowModal(true)
+		setShowModal(true)	
 	}
 
 	const handleUpdate = data => {
+		hideMessage()
 		setCategory(data)
 		setOperation("edit")
 		setShowModal(true)
@@ -40,10 +43,14 @@ const Categories = ({categories, loading, getCategories, deleteCategory, clear_m
 
 	const hideModal = () => {
 		setShowModal(false);
-		if(messages.message)
+		if(messages.error)
 			clear_message();
 	} 
 
+	const hideMessage = () =>{
+			if(messages.message)
+				clear_message();
+		}
 
 	return (
 		<div className="px-2">	
@@ -82,7 +89,9 @@ const Categories = ({categories, loading, getCategories, deleteCategory, clear_m
 				</div>
 			</div>
 
-			{ messages.message && !messages.error ? <AlertMessage messages={messages} /> : ''}
+			{ messages.message ? 
+				<AlertMessage messages={messages} /> : null
+			}
 
 			{
 				categories.map( category => (
