@@ -27,9 +27,9 @@ router
 
 		const { name, email, password, userType } = req.body;
 		
-		// if( (userType === 'admin' || userType === 'superadmin') && req.user.userType !== 'superadmin') {
-		// 	return res.status(403).json( { msg: 'Unauthorized Action '})
-		// }
+	  if( (userType === 'admin' || userType === 'superadmin') && req.user.userType !== 'superadmin') {
+	  	return res.status(403).json( { msg: 'Unauthorized Action '})
+	  }
 
 		if( password.length < 6 ) return res.status(400).json({ 
 			msg: 'User validation failed: Password must be at lest 6 charactes'

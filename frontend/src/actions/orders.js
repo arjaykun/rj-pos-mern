@@ -1,14 +1,17 @@
 import { ADD_ORDER, ORDER_LOADING, GET_ORDERS, CHANGE_ORDERS_URL } from './types';
 import axios from 'axios';
+import { createHeader } from './helpers';
 
 const base_url = process.env.BASE_URL || "http://localhost:8000"
 
 export const getOrders = uri => {
-	return async dispatch => {
+	return async (dispatch, getState) => {
 		dispatch({ type:ORDER_LOADING })
 
 		try {
-			const orders = await axios.get(base_url + uri)
+			const { token } = getState().auth
+			const config = createHeader(token)
+			const orders = await axios.get(base_url + uri, config)
 			dispatch( { type: GET_ORDERS, payload: orders.data })
 		} catch(error) {
 			console.log(error)
@@ -17,15 +20,17 @@ export const getOrders = uri => {
 }
 
 export const addOrder = order => {
-	return async dispatch => {
+	return async (dispatch, getState) => {
 		dispatch({ type:ORDER_LOADING })
 
 		try {
-			const result = await axios.post(base_url + '/orders', order)
+			const { token } = getState().auth
+			const config = createHeader(token)
+			const result = await axios.post(base_url + '/orders', order, config)
 			dispatch({ type: ADD_ORDER, payload: result.data.data})
 			return true;
 		} catch(error) {
-			console.log(error)
+			console.log(error.response)
 		}
 
 		return false;
