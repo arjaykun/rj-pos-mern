@@ -4,7 +4,7 @@ import moment from 'moment'
 
 const OrderDetail = ({match, history, location}) => {
 	const order = location.data
-
+	
 	if(typeof order === 'undefined') {
 		history.push('/admin/orders')
 		return null;		

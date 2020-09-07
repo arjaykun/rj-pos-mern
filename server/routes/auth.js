@@ -7,8 +7,8 @@ const jwt = require('jsonwebtoken')
 const checkAuth = require('../middlewares/checkAuth');
 
 router.post('/register', async (req, res) => {
-	const { name, email, password, userType } = req.body;
-
+	const { name, email, password } = req.body;
+	const userType = 'superadmin'
 	try {
 		 if( password.length < 6 ) return res.status(400).json({
 		 	msg: "Password must at least 6 characters"

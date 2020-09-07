@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux'
 import {clear_message} from '../../actions/messages'
 import { MdClose } from 'react-icons/md'
-const AlertMessage = ({messages, clear_message}) => {
+const AlertMessage = ({messages, clear_message }) => {
 	const color = messages.error ? 'red' : 'green';
 
 	return (

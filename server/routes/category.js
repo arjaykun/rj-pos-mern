@@ -4,7 +4,7 @@ const Category = require('../models/category');
 const { isAdmin } = require('../middlewares/checkRole');
 
 router.route('/')
-	.get(isAdmin, async (req, res) => {
+	.get( async (req, res) => {
 		
 		if(req.query.get === 'all') {
 			try {

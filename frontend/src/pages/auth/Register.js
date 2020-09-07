@@ -1,17 +1,30 @@
-import React, {useState, Fragment} from 'react'
+import React, {useState, Fragment, useEffect} from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import {connect} from 'react-redux'
 import { register } from '../../actions/auth'
 import Loading from '../../components/utils/Loading'
+import { clear_message } from '../../actions/messages'
 
-const Login = ({message, register, auth}) => {
+const Login = ({message, register, auth, clear_message}) => {
 	const [name, setName] = useState('')
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 
+	useEffect( () => {
+    return () => clear_message()
+    
+    // eslint-disable-next-line
+	}, [])
+
+
 	const handleRegister = e => {
 		e.preventDefault()
-		register(name, email, password)
+		const res = register(name, email, password)
+		if(res){
+			setName('')
+			setEmail('')
+			setPassword('')
+		}
 	}
 	
 	return (
@@ -86,4 +99,4 @@ const mapStateToProps = state => ({
 	auth: state.auth
 })
 
-export default connect(mapStateToProps, {register})(Login)
+export default connect(mapStateToProps, {register, clear_message})(Login)

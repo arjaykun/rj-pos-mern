@@ -56,8 +56,8 @@ export const deleteUser = userId => {
 		try { 
 			const { token } = getState().auth
 			const config = createHeader(token)
-			await axios.delete(base_url + '/users/' + userId)
-			addSuccessMessage(dispatch, "User deleted successfully.", config)
+			await axios.delete(base_url + '/users/' + userId, config)
+			addSuccessMessage(dispatch, "User deleted successfully.")
 			dispatch({type: DELETE_USER, payload: userId})
 		} 
 		catch(error) {

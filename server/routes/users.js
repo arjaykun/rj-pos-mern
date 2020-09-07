@@ -90,9 +90,9 @@ router
 		try {
 			const user = await User.findOne({_id:req.params.id});
 			if(user.userType === 'admin' && req.user.userType !== 'superadmin') {
-				res.status(403).json({ msg: 'Unauthorized Action'})
+				res.status(403).json({ msg: 'Unauthorized Action, you can not delete an admin if you are not a superadmin'})
 			} else if(user.userType === 'superadmin') {
-				res.status(403).json({ msg: 'Unauthorized Action'})
+				res.status(403).json({ msg: 'Unauthorized Action, you cant remove a superadmin from the userlist'})
 			} else {
 				await User.deleteOne({_id:req.params.id});
 				res.json({ msg: 'User deleted.'})

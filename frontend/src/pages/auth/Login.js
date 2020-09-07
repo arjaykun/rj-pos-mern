@@ -1,16 +1,27 @@
-import React, {useState, Fragment} from 'react'
+import React, {useState, Fragment, useEffect } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import {connect} from 'react-redux'
 import { login } from '../../actions/auth'
 import Loading from '../../components/utils/Loading'
+import { clear_message } from '../../actions/messages'
 
-const Login = ({login, message, auth}) => {
+const Login = ({login, messages, auth, location, clear_message}) => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 
+	useEffect( () => {
+    	return () => clear_message()
+
+    	// eslint-disable-next-line
+	}, [])
+
 	const handleLogin = e => {
 		e.preventDefault()
-		login(email, password)
+		const res = login(email, password)
+		if(res) {
+			setEmail('')
+			setPassword('')
+		}
 	}
 
 	return (
@@ -18,15 +29,14 @@ const Login = ({login, message, auth}) => {
 			{ auth.loading ? <Loading /> : null}
 
 			{ auth.isAuthenticated ? <Redirect to="/" /> :
-
 			<div className="flex justify-center items-center h-screen w-full">
 			  <div className="w-10/12">
 				  <h1 className="text-2xl text-gray-700 font-bold pb-4">
 				  	Welcome to RJ SHOP! <br />
 				  	<small className="text-gray-600 text-base">Enter your credentials to continue.</small>
 				  </h1>	
-				  <div className="text-red-500 text-sm font-extrabold pb-2">
-				  	{message}
+				  <div className={`text-${messages.error ? 'red': 'green'}-500 text-sm font-extrabold pb-2`}>
+				  	{messages.message}
 				  </div>
 					<form onSubmit={handleLogin}>
 						<div className="mb-4">
@@ -70,8 +80,8 @@ const Login = ({login, message, auth}) => {
 }
 
 const mapStateToProps = state => ({
-	message: state.messages.message, 
+	messages: state.messages, 
 	auth: state.auth,
 })
 
-export default connect(mapStateToProps, { login })(Login)
+export default connect(mapStateToProps, { login, clear_message })(Login)
