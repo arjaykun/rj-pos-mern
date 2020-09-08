@@ -10,7 +10,7 @@ const DbPanel = ({end, color, title, icon }) => {
 			onMouseEnter={ () => setHover(true) }
 			onMouseLeave={ () => setHover(false) }
 			className={`bg-${color || 'red'}-500 overflow-hidden flex h-24 relative rounded-lg flex items-center hover:bg-${color}-400`}>
-			<h1 className={`font-extrabold text-${color}-700 uppercase text-xs absolute top-0 pt-3 pl-3 z-20`}>
+			<h1 className={`font-extrabold text-${color}-700 uppercase text-xs absolute top-0 pt-3 pl-3 z-10`}>
 				{title}
 			</h1>
 			<span className="text-3xl font-bold text-white px-3">

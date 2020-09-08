@@ -1,13 +1,43 @@
-import React from 'react';
-import {FaSlackHash, FaShoppingBasket, FaRegUserCircle, FaChevronCircleRight} from 'react-icons/fa';
+import React, { useEffect, useState } from 'react';
+import {FaSlackHash, FaShoppingBasket, FaRegUserCircle } from 'react-icons/fa';
 import DbPanel from '../components/admin/DbPanel'
+import Loading from '../components/utils/Loading'
+import Modal from '../components/utils/Modal'
 import moment from 'moment';
 import { connect } from 'react-redux';
+import { getOrders } from '../actions/orders'
+import OrderRow from '../components/orders/OrderRow'
+import OrderDetail from '../components/orders/OrderDetail'
 
-const Home = ({user}) => {
+
+const Home = ({user, orders, loading, count, getOrders}) => {
+
+	const [ showModal, setShowModal ] = useState(false)
+	const [ order, setOrder ] = useState({items: [], _id: '', total: 0,})
+
+	useEffect( () => {
+		getPendingOrders()
+		// eslint-disable-next-line
+	}, [])
+
+	const getPendingOrders = () => {
+		getOrders(`/orders?page=1&limit=100&filter_by=completed&filter_with=false`)
+	}
+
+	// get the selected order then show the modal passing that order in OrderDetail component
+	const handleShowOrder = data => {
+		setOrder(data)
+		setShowModal(true)
+	}
 
 	return (
 		<div className="px-2">
+
+			<Modal show={showModal} hideModal={ () => setShowModal(false) }>
+				<OrderDetail order={order} />
+			</Modal>
+			{ loading ? <Loading /> : null}
+
 			<div 
 				className="py-2 mt-5 flex justify-between items-center"
 			>
@@ -24,8 +54,12 @@ const Home = ({user}) => {
 				</div>
 				
 			</div>
-			<h1 className="border-b border-t border-red-900 my-2 font-bold py-2 uppercase text-lg">
-				Order Status
+			<h1 className="border-b border-t border-red-900 my-2 font-bold py-2 uppercase text-lg flex items-center justify-between">
+				<span>Order Status</span>
+				<button
+					className="p-2 bg-green-400 text-white hover:bg-green-300 rounded-lg uppercase font-bold text-sm"
+					onClick={ () => getPendingOrders()}
+				> Refresh </button>
 			</h1>
 			<div className="grid grid-cols-2 gap-1">
 				<DbPanel 
@@ -41,9 +75,8 @@ const Home = ({user}) => {
 					icon={<FaShoppingBasket />}
 				/>
 			</div>
-			<h1 className="border-b border-t border-red-900 my-2 font-bold py-2 uppercase text-lg flex items-center justify-between">
+			<h1 className="border-b border-t border-red-900 my-2 font-bold py-2 uppercase text-lg">
 				<span>Pending Orders</span>
-				<button> Refresh</button>
 			</h1>
 			<table className="table-auto w-full">
 				
@@ -56,24 +89,20 @@ const Home = ({user}) => {
 					</tr>
 				</thead>
 				<tbody>
-			
-					<tr className="">
-						<td className="py-2">{ moment().format('MM/DD/YY hh:mm A')}</td>
-						<td className="py-2">123</td>
-						<td className="py-2">&#8369; 102</td>
-						<td className="py-2">	
-								<FaChevronCircleRight />
-						</td>
-					</tr>
 
-					<tr className="bg-gray-300">
-						<td className="py-2">{ moment().format('MM/DD/YY hh:mm A')}</td>
-						<td className="py-2">123</td>
-						<td className="py-2">&#8369; 102</td>
-						<td className="py-2">	
-								<FaChevronCircleRight />
-						</td>
-					</tr>
+					{ 
+						count > 0 ?
+						orders.map( order => (
+							<OrderRow key={order._id} order={order} showOrder={ () => handleShowOrder(order)}/>
+						)) :
+						<tr>
+							<td colSpan="4" className="text-center text-3xl font-bold text-gray-700"> 
+								No Pending Orders
+							</td>
+						</tr>
+					}
+			
+			
 				
 				</tbody>
 
@@ -84,7 +113,10 @@ const Home = ({user}) => {
 }
 
 const mapStateToProps = state => ({
-	user: state.auth.user
+	user: state.auth.user,
+	orders: state.orders.orders,
+	loading: state.orders.loading,
+	count: state.orders.count,
 })
 
-export default connect(mapStateToProps)(Home)
+export default connect(mapStateToProps, {getOrders})(Home)

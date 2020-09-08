@@ -4,15 +4,15 @@ const Modal = ({show, hideModal, children}) => {
 	return (
 		<div 
 			className={`
-					inset-0 fixed h-full w-full flex justify-center items-center z-10
+					inset-0 fixed h-full w-full flex justify-center items-center z-20
 					${ show? 'block' : 'hidden'}
 				`}>
 			
 			{/*overlay*/}
-			<div className="bg-black opacity-75 absolute inset-0 w-full h-full z-10"></div>
+			<div className="bg-black opacity-75 absolute inset-0 w-full h-full z-20"></div>
 
 			<div className={`
-				bg-white p-3 w-11/12 h-auto z-20 rounded-lg relative 
+				bg-white p-3 w-108 h-auto z-30 rounded-lg relative
 			`}>
 				
 				{children}

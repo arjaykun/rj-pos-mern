@@ -19,6 +19,11 @@ export const getOrders = uri => {
 	}
 }
 
+// export const getPendingOrders = () => {
+// 	const url = base_url + "/orders?filter_by=completed&filter_with=false"
+// 	
+// }
+
 export const addOrder = order => {
 	return async (dispatch, getState) => {
 		dispatch({ type:ORDER_LOADING })

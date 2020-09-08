@@ -37,6 +37,19 @@ router.route('/')
 	})
 
 router
+	.route('/aggregate')
+	.get(isAdmin, async (req, res) => {
+		const result = await Order.aggregate([
+			{ $match: {completed: true, createdAt: {$lte: new Date()} }},
+			{ $group: {_id: null, daily_sales: {$sum: '$total'} }},
+			{ $project: {_id: 0, daily_sales: 1 }}
+		]) 
+
+		console.log(result)
+		return res.json({result})
+	})
+
+router
 	.route('/:id')
 	.get(isAdmin,  async (req, res) => {
 		const order = await Order.findById(req.params.id)
