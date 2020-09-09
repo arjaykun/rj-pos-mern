@@ -51,7 +51,7 @@ const usersReducer = (state = initialReducer, action) => {
 			return {
 				...state,
 				loading: false,
-				users: [ {...action.payload, isNew: true}, ...state.users.filter( user => user._id !== action.payload)]
+				users: [ {...action.payload, isNew: true}, ...state.users.filter( user => user._id !== action.payload._id)]
 			}
 		case USER_LOADING:
 			return { ...state, loading: true }

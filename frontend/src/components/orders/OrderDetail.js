@@ -1,7 +1,13 @@
 import React from 'react'
 import moment from 'moment'
 import { MdCheckCircle } from 'react-icons/md'
-const OrderDetail = ({order}) => {
+
+const OrderDetail = ({order, completeOrder}) => {
+
+	const handleClick = () => {
+		completeOrder(order)
+	}
+
 	return (
 		<div>
 			<h1 className="text-xl font-bold text-gray-700 uppercase pb-2">
@@ -67,8 +73,8 @@ const OrderDetail = ({order}) => {
 			</table>
 
 			<button 
-				className={`rounded-lg w-full p-2 text-gray-100 my-4 bg-red-700 flex items-center justify-center hover:bg-red-600`}
-				type="submit"
+				className={`btn w-full my-4 bg-red-700 flex items-center justify-center hover:bg-red-600`}
+				onClick={handleClick}
 				>
 				<div className=" uppercase font-bold">Serve Order</div>
 				<MdCheckCircle className="ml-2 text-xl text-white" />

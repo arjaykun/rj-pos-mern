@@ -1,4 +1,4 @@
-import { AUTH_LOADING, LOGIN_USER, LOGOUT_USER, LOAD_USER } from './types'
+import { AUTH_LOADING, LOGIN_USER, LOGOUT_USER, LOAD_USER, UPDATE_ACCOUNT } from './types'
 import axios from 'axios'
 import { addErrorMessage, addSuccessMessage } from './messages';
 import { createHeader } from './helpers';
@@ -31,7 +31,9 @@ export const login = (email, password) => {
 			dispatch({type: LOGIN_USER, payload: { token: data.token, user: data.user } })
 			return true
 		} catch(error) {
-			addErrorMessage(dispatch, error)
+			 if(!error.response)
+			 	return 	window.location.href = '/error_500'
+			 addErrorMessage(dispatch, error)
 		}
 
 		return false
@@ -51,6 +53,22 @@ export const register = (name, email, password) => {
 		}
 
 		return false
+	}
+}
+
+export const updateAccount = user => {
+	return async (dispatch, getState) => {
+		dispatch({ type: AUTH_LOADING })
+		try {
+			const { token } = getState().auth
+			const config = createHeader(token)
+			await axios.patch(base_url + `/auth/update/${user._id}/`, user, config)
+			addSuccessMessage(dispatch, "Profile updated successfully.")
+			dispatch({type: UPDATE_ACCOUNT, payload: user})
+		} catch(error) {
+			console.log(error)
+			addErrorMessage(dispatch, error)
+		}
 	}
 }
 

@@ -1,4 +1,4 @@
-import { ADD_ORDER, ORDER_LOADING, GET_ORDERS, CHANGE_ORDERS_URL } from '../actions/types';
+import { ADD_ORDER, ORDER_LOADING, GET_ORDERS, CHANGE_ORDERS_URL, UPDATE_ORDER } from '../actions/types';
 
 const initialState = {
 	orders: [],
@@ -40,6 +40,12 @@ const ordersReducer = (state = initialState, action) => {
 		case ADD_ORDER:
 			return {
 				...state, orders: [action.payload, ...state.orders], loading: false
+			}
+		case UPDATE_ORDER:
+			return {
+				...state, 
+				loading: false,
+				orders: [action.payload, ...state.orders.filter( order => order.id !== action.payload._id)]
 			}
 		case CHANGE_ORDERS_URL:
 			return {

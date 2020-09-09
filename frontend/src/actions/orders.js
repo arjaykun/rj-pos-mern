@@ -1,4 +1,4 @@
-import { ADD_ORDER, ORDER_LOADING, GET_ORDERS, CHANGE_ORDERS_URL } from './types';
+import { ADD_ORDER, ORDER_LOADING, GET_ORDERS, CHANGE_ORDERS_URL, UPDATE_ORDER } from './types';
 import axios from 'axios';
 import { createHeader } from './helpers';
 
@@ -19,10 +19,22 @@ export const getOrders = uri => {
 	}
 }
 
-// export const getPendingOrders = () => {
-// 	const url = base_url + "/orders?filter_by=completed&filter_with=false"
-// 	
-// }
+export const completeOrder = order => {
+	return async (dispatch, getState) => {
+		dispatch({ type:ORDER_LOADING })
+		try {
+			const { token } = getState().auth
+			const config = createHeader(token)
+			const data = {...order, completed: true}
+			await axios.patch(base_url + '/orders/' + order._id, data, config)
+			dispatch({type: UPDATE_ORDER, payload:data})
+			return true;
+		} catch(error) {
+			console.log(error.response)
+		}
+		return false;
+	}
+}
 
 export const addOrder = order => {
 	return async (dispatch, getState) => {

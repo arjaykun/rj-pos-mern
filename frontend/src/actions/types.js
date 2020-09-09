@@ -32,6 +32,7 @@ export const SEARCH_ITEM = 'SEARCH_ITEM'
 // order action types
 export const GET_ORDERS = 'GET_ORDERS'
 export const ADD_ORDER = 'ADD_ORDER'
+export const UPDATE_ORDER = 'UPDATE_ORDER'
 export const ORDER_LOADING = 'ORDER_LOADING'
 // users action types
 export const GET_USERS = 'GET_USERS'
@@ -43,4 +44,5 @@ export const USER_LOADING = 'USER_LOADING'
 export const LOAD_USER = 'LOAD_USER'
 export const LOGIN_USER = 'LOGIN_USER'
 export const LOGOUT_USER = 'LOGOUT_USER'
+export const UPDATE_ACCOUNT = 'UPDATE_ACCOUNT'
 export const AUTH_LOADING = 'AUTH_LOADING'

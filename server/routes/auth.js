@@ -23,7 +23,7 @@ router.post('/register', async (req, res) => {
 
 		if(user) {
 			let token = jwt.sign( {
-				id: user._id, 
+				_id: user._id, 
 				name: user.name,
 				email: user.email,
 				password: user.password,
@@ -39,6 +39,24 @@ router.post('/register', async (req, res) => {
 
 })
 
+router.patch('/update/:id', async (req, res) => {
+	try {
+		const user = await User.findOne({_id: req.params.id})
+		const {name, email, password} = req.body;
+		if( await bcrypt.compare(password, user.password) ) {
+			const option = {omitUndefined:true, runValidators: true};
+			await User.updateOne({_id:req.params.id}, {
+				$set: { name, email }
+			}, option);
+			return res.json({ msg: 'User updated.'} )
+		} else {
+			res.status(400).json({ msg: 'Wrong password.' });
+		}
+	} catch({message}){
+		res.status(500).json({ msg: message });
+	}
+})
+
 router.post('/login', async (req, res) => {
 	const { email, password } = req.body;
 	try {
@@ -47,7 +65,7 @@ router.post('/login', async (req, res) => {
 		if(user) {
 			if( await bcrypt.compare(password, user.password) ) {
 				let token = jwt.sign( {
-					id: user._id, 
+					_id: user._id, 
 					name: user.name,
 					email: user.email,
 					password: user.password,

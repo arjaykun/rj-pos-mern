@@ -5,12 +5,12 @@ import Loading from '../components/utils/Loading'
 import Modal from '../components/utils/Modal'
 import moment from 'moment';
 import { connect } from 'react-redux';
-import { getOrders } from '../actions/orders'
+import { getOrders, completeOrder } from '../actions/orders'
 import OrderRow from '../components/orders/OrderRow'
 import OrderDetail from '../components/orders/OrderDetail'
 
 
-const Home = ({user, orders, loading, count, getOrders}) => {
+const Home = ({user, orders, loading, count, getOrders, completeOrder}) => {
 
 	const [ showModal, setShowModal ] = useState(false)
 	const [ order, setOrder ] = useState({items: [], _id: '', total: 0,})
@@ -34,7 +34,7 @@ const Home = ({user, orders, loading, count, getOrders}) => {
 		<div className="px-2">
 
 			<Modal show={showModal} hideModal={ () => setShowModal(false) }>
-				<OrderDetail order={order} />
+				<OrderDetail order={order} completeOrder={completeOrder} />
 			</Modal>
 			{ loading ? <Loading /> : null}
 
@@ -119,4 +119,4 @@ const mapStateToProps = state => ({
 	count: state.orders.count,
 })
 
-export default connect(mapStateToProps, {getOrders})(Home)
+export default connect(mapStateToProps, {getOrders, completeOrder})(Home)

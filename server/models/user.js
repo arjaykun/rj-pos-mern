@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
 		type: String, 
 		required: true,
 		lowercase: true,
-		match: /^[A-Za-z ]+$/gi,
+		match: /[A-Za-z ]/gi,
 		minlength: 3,
 	},
 

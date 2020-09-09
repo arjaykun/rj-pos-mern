@@ -1,7 +1,7 @@
-import { LOGIN_USER, AUTH_LOADING, LOAD_USER, UNLOADING, LOGOUT_USER } from '../actions/types'
+import { LOGIN_USER, AUTH_LOADING, LOAD_USER, UNLOADING, LOGOUT_USER, UPDATE_ACCOUNT } from '../actions/types'
 
 const initialState = {
-	user: null,
+	user: {},
 	token: localStorage.getItem('token'),	
 	isAuthenticated: false,
 	loading: false,
@@ -33,6 +33,12 @@ const authReducer = (state = initialState, action) => {
 				isAuthenticated: false,
 				token: "",
 				user: null,
+			}
+		case UPDATE_ACCOUNT: 
+			return {
+				...state,
+				user: {...state.user ,...action.payload},
+				loading: false
 			}
 		case AUTH_LOADING: 
 			return {...state, loading: true}

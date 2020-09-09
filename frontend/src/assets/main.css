@@ -12265,6 +12265,26 @@ video {
   transition-delay: 1000ms;
 }
 
+.btn {
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  color: #f7fafc
+}
+
+.custom-input {
+  width: 100%;
+  font-size: 1rem;
+  border-bottom-width: 2px;
+  border-color: #4a5568;
+  outline: 0;
+  background-color: #e2e8f0;
+  padding: 0.5rem;
+  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+  transition-duration: 500ms;
+  border-radius: 0.5rem;
+  margin-top: 0.5rem
+}
+
 @media (min-width: 640px) {
   .sm\:space-y-0 > :not(template) ~ :not(template) {
     --space-y-reverse: 0;

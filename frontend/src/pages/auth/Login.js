@@ -4,10 +4,12 @@ import {connect} from 'react-redux'
 import { login } from '../../actions/auth'
 import Loading from '../../components/utils/Loading'
 import { clear_message } from '../../actions/messages'
-
+import { FaRegEyeSlash, FaRegEye } from 'react-icons/fa'
 const Login = ({login, messages, auth, location, clear_message}) => {
+
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
+	const [showPwd, setShowPwd] = useState(false)
 
 	useEffect( () => {
     	return () => clear_message()
@@ -46,24 +48,35 @@ const Login = ({login, messages, auth, location, clear_message}) => {
 								value={email} 
 								onChange={ e => setEmail(e.target.value) }
 								placeholder="your@email.com"
-								className="w-full text-base border-b-2 border-gray-700 outline-none bg-gray-300 focus:bg-white p-2 transition duration-500 rounded-lg mt-2" 
+								className="custom-input focus:bg-white" 
 							/>
 						</div>
 
 						<div className="mb-4">
 							<label className="uppercase text-base font-bold text-gray-700">Password</label>
-							<input 
-								type="password" 
-								value={password} 
-								onChange={ e => setPassword(e.target.value) }
-								placeholder="*********"
-								className="w-full text-base border-b-2 border-gray-700 outline-none bg-gray-300 focus:bg-white p-2 transition duration-500 rounded-lg mt-2" 
-							/>
+							<label className="relative">
+								<input 
+									type={showPwd? 'text':'password'}
+									value={password} 
+									onChange={ e => setPassword(e.target.value) }
+									placeholder="*********"
+									className="custom-input focus:bg-white" 
+								/>
+								<span 
+									className="absolute top-0 right-0 mr-4 cursor-pointer"
+									onClick={ () => setShowPwd( prevState => !prevState )}
+								>
+									{ showPwd ? 
+										 <FaRegEyeSlash className="text-lg font-bold text-gray-700" />:
+										 <FaRegEye className="text-lg font-bold text-gray-700" />
+									}
+								</span>
+							</label>
 						</div>
 
 						<button 
 							type="submit" 
-							className="w-full uppercase bg-gray-700 hover:bg-gray-600 rounded-lg text-gray-100 p-2"
+							className="btn bg-gray-700 hover:bg-gray-600 w-full"
 						>
 						LOGIN
 						</button>
