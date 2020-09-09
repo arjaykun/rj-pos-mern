@@ -41,16 +41,58 @@ router.route('/')
 	})
 
 router
-	.route('/aggregate')
+	.route('/sales')
 	.get(isAdmin, async (req, res) => {
-		const result = await Order.aggregate([
-			{ $match: {completed: true, createdAt: {$lte: new Date()} }},
-			{ $group: {_id: null, daily_sales: {$sum: '$total'} }},
-			{ $project: {_id: 0, daily_sales: 1 }}
-		]) 
+		const { day_limit, month_limit } = req.query
+		// this will return monthly sales 
+		// daily sales with limit of 7 days
+		const result = await Order.aggregate()
+			.match({completed: true})
+			.sort({createdAt: 1})
+			.facet({
+				yearly: [
+					{
+						$group: {
+							_id: {
+								year: { $year: '$createdAt' },
+							},
+							daily_sales: {$sum: '$total'},			
+				 			order_count: {$sum: 1}
+						}
+					}
+				],
+				monthly: [
+					{
+						$group: {
+							_id: {
+								year: { $year: '$createdAt' },
+				 				month: { $month: '$createdAt' },
+							},
+							daily_sales: {$sum: '$total'},			
+				 			order_count: {$sum: 1}
+						}
+					},
+				 	{ $limit: month_limit || 12 }
+				],
 
-		console.log(result)
-		return res.json({result})
+				daily: [
+					{ 
+						$group: {
+				 			_id: {
+				 				year: { $year: '$createdAt' },
+				 				month: { $month: '$createdAt' },
+				 				day: { $dayOfMonth: '$createdAt' },
+				 			}, 
+				 			daily_sales: {$sum: '$total'},			
+				 			order_count: {$sum: 1}
+				 		},
+				 	},
+				 	{ $limit: day_limit || 7 }
+				]
+
+			})
+			
+		return res.json(result)
 	})
 
 router
