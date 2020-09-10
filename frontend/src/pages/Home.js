@@ -6,17 +6,19 @@ import Modal from '../components/utils/Modal'
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { getOrders, completeOrder } from '../actions/orders'
+import { getSales } from '../actions/sales'
 import OrderRow from '../components/orders/OrderRow'
 import OrderDetail from '../components/orders/OrderDetail'
 
 
-const Home = ({user, orders, loading, count, getOrders, completeOrder}) => {
+const Home = ({user, orders, loading, sales_loading, count, getOrders, completeOrder, getSales}) => {
 
 	const [ showModal, setShowModal ] = useState(false)
 	const [ order, setOrder ] = useState({items: [], _id: '', total: 0,})
 
 	useEffect( () => {
 		getPendingOrders()
+		getSales('/orders/sales')
 		// eslint-disable-next-line
 	}, [])
 
@@ -36,7 +38,7 @@ const Home = ({user, orders, loading, count, getOrders, completeOrder}) => {
 			<Modal show={showModal} hideModal={ () => setShowModal(false) }>
 				<OrderDetail order={order} completeOrder={completeOrder} />
 			</Modal>
-			{ loading ? <Loading /> : null}
+			{ loading && sales_loading ? <Loading /> : null}
 
 			<div 
 				className="py-2 mt-5 flex justify-between items-center"
@@ -69,7 +71,7 @@ const Home = ({user, orders, loading, count, getOrders, completeOrder}) => {
 				  icon={<FaSlackHash />}
 				 />
 				<DbPanel 
-					end={5} 
+					end={orders.length} 
 					title="Pending Order" 
 					color="orange" 
 					icon={<FaShoppingBasket />}
@@ -116,7 +118,8 @@ const mapStateToProps = state => ({
 	user: state.auth.user,
 	orders: state.orders.orders,
 	loading: state.orders.loading,
+	sales_loading: state.sales.loading,
 	count: state.orders.count,
 })
 
-export default connect(mapStateToProps, {getOrders, completeOrder})(Home)
+export default connect(mapStateToProps, {getOrders, completeOrder, getSales})(Home)

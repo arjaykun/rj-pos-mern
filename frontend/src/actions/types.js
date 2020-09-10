@@ -34,6 +34,9 @@ export const GET_ORDERS = 'GET_ORDERS'
 export const ADD_ORDER = 'ADD_ORDER'
 export const UPDATE_ORDER = 'UPDATE_ORDER'
 export const ORDER_LOADING = 'ORDER_LOADING'
+//sales actin types
+export const GET_SALES = 'GET_SALES'
+export const SALES_LOADING = 'SALES_LOADING'
 // users action types
 export const GET_USERS = 'GET_USERS'
 export const ADD_USER = 'ADD_USER'

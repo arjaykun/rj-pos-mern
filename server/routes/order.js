@@ -4,6 +4,7 @@ const uniqid = require('uniqid');
 const Order = require('../models/order');
 const { pagination } = require('../helpers/pagination');
 const { isAdmin } = require ('../middlewares/checkRole')
+const moment = require('moment')
 
 router.route('/')
 	.get(async (req, res) => { 
@@ -46,53 +47,72 @@ router
 		const { day_limit, month_limit } = req.query
 		// this will return monthly sales 
 		// daily sales with limit of 7 days
-		const result = await Order.aggregate()
-			.match({completed: true})
-			.sort({createdAt: 1})
-			.facet({
-				yearly: [
-					{
-						$group: {
-							_id: {
-								year: { $year: '$createdAt' },
-							},
-							daily_sales: {$sum: '$total'},			
-				 			order_count: {$sum: 1}
+		try {
+			const result = await Order.aggregate()
+				.match({completed: true})
+				.sort({createdAt: 1})
+				.facet({
+					yearly: [
+						{
+							$group: {
+								_id: {
+									year: { $year: '$createdAt' },
+								},
+								daily_sales: {$sum: '$total'},			
+					 			order_count: {$sum: 1}
+							}
 						}
-					}
-				],
-				monthly: [
-					{
-						$group: {
-							_id: {
-								year: { $year: '$createdAt' },
-				 				month: { $month: '$createdAt' },
-							},
-							daily_sales: {$sum: '$total'},			
-				 			order_count: {$sum: 1}
-						}
-					},
-				 	{ $limit: month_limit || 12 }
-				],
+					],
+					monthly: [
+						{
+							$group: {
+								_id: {
+									year: { $year: '$createdAt' },
+					 				month: { $month: '$createdAt' },
+								},
+								daily_sales: {$sum: '$total'},			
+					 			order_count: {$sum: 1}
+							}
+						},
+					 	{ $limit: month_limit || 12 }
+					],
 
-				daily: [
-					{ 
-						$group: {
-				 			_id: {
-				 				year: { $year: '$createdAt' },
-				 				month: { $month: '$createdAt' },
-				 				day: { $dayOfMonth: '$createdAt' },
-				 			}, 
-				 			daily_sales: {$sum: '$total'},			
-				 			order_count: {$sum: 1}
-				 		},
-				 	},
-				 	{ $limit: day_limit || 7 }
-				]
-
+					daily: [
+						{ 
+							$group: {
+					 			_id: {
+					 				year: { $year: '$createdAt' },
+					 				month: { $month: '$createdAt' },
+					 				day: { $dayOfMonth: '$createdAt' },
+					 			}, 
+					 			daily_sales: {$sum: '$total'},			
+					 			order_count: {$sum: 1}
+					 		},
+					 	},
+					 	{ $limit: day_limit || 7 }
+					]
 			})
+
+			const start = moment().startOf('day')
+			const end = moment().endOf('day')
+
+			const today = await Order.aggregate()
+				.match({completed: true, createdAt: { $gte: new Date(Date.parse(start)), $lte: new Date(Date.parse(end))  }})
+				.group({
+					 			_id: {
+					 				year: { $year: '$createdAt' },
+					 				month: { $month: '$createdAt' },
+					 				day: { $dayOfMonth: '$createdAt' },
+					 			}, 
+					 			daily_sales: {$sum: '$total'},			
+					 			order_count: {$sum: 1}
+					 		})
+
+			return res.json({ today:today[0], ...result[0]})
+		} catch(error) {
+			return res.status(500).json({msg: 'Sorry! Something went wrong!'})
+		} 
 			
-		return res.json(result)
 	})
 
 router
