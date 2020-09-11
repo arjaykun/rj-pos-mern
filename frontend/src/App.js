@@ -26,7 +26,7 @@ const App = ({loadUser}) => {
 
 
   return (
-    <div className="w-120 max-w-full mx-auto bg-white h-screen overflow-y-auto">
+    <div className="w-120 max-w-full mx-auto bg-white min-h-screen">
      <Router>
        <Header />
        <Switch>
@@ -37,7 +37,7 @@ const App = ({loadUser}) => {
          <PrivateRoute exact path="/shop" component={Shop} />
          <PrivateRoute path="/admin" component={Admin} />     
          <Route component={Error_404} />    
-       </Switch>
+       </Switch>     
      </Router>
     </div>
   );

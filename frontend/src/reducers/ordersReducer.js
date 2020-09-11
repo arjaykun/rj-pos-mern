@@ -45,7 +45,7 @@ const ordersReducer = (state = initialState, action) => {
 			return {
 				...state, 
 				loading: false,
-				orders: state.orders.filter( order => order.id !== action.payload._id)
+				orders: [...state.orders.filter( order => order._id !== action.payload._id), action.payload]
 			}
 		case CHANGE_ORDERS_URL:
 			return {

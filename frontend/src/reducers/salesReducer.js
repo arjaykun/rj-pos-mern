@@ -15,9 +15,10 @@ const salesReducer = (state = initialState, action) => {
 		case GET_SALES:
 			return {
 				...state,
-				daily: action.payload.daily,
-				monthly: action.payload.monthly,
-				yearly: action.payload.yearly,
+				daily: action.payload.daily.reverse(),
+				monthly: action.payload.monthly.reverse(),
+				yearly: action.payload.yearly.reverse(),
+				today: action.payload.today,
 				loading: false,
 			}
 		default:

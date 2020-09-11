@@ -27,7 +27,7 @@ export const completeOrder = order => {
 			const config = createHeader(token)
 			const data = {...order, completed: true}
 			await axios.patch(base_url + '/orders/' + order._id, data, config)
-			dispatch({type: UPDATE_ORDER, payload:data})
+			dispatch({type: UPDATE_ORDER, payload: data})
 			return true;
 		} catch(error) {
 			console.log(error.response)

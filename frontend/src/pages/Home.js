@@ -11,19 +11,20 @@ import OrderRow from '../components/orders/OrderRow'
 import OrderDetail from '../components/orders/OrderDetail'
 
 
-const Home = ({user, orders, loading, sales_loading, count, getOrders, completeOrder, getSales}) => {
+const Home = ({user, orders, loading, sales_loading, count, getOrders, completeOrder, getSales, today}) => {
 
 	const [ showModal, setShowModal ] = useState(false)
 	const [ order, setOrder ] = useState({items: [], _id: '', total: 0,})
 
 	useEffect( () => {
-		getPendingOrders()
-		getSales('/orders/sales')
+			getPendingOrdersAndSales()
+		
 		// eslint-disable-next-line
 	}, [])
 
-	const getPendingOrders = () => {
+	const getPendingOrdersAndSales = () => {
 		getOrders(`/orders?page=1&limit=100&filter_by=completed&filter_with=false`)
+		getSales('/orders/sales')
 	}
 
 	// get the selected order then show the modal passing that order in OrderDetail component
@@ -32,11 +33,18 @@ const Home = ({user, orders, loading, sales_loading, count, getOrders, completeO
 		setShowModal(true)
 	}
 
+	const handleComplete = () => {
+		completeOrder(order)
+		setShowModal(false)
+
+		getPendingOrdersAndSales()
+	}
+
 	return (
 		<div className="px-2">
 
 			<Modal show={showModal} hideModal={ () => setShowModal(false) }>
-				<OrderDetail order={order} completeOrder={completeOrder} />
+				<OrderDetail completeOrder={handleComplete} order={order} />
 			</Modal>
 			{ loading && sales_loading ? <Loading /> : null}
 
@@ -60,12 +68,12 @@ const Home = ({user, orders, loading, sales_loading, count, getOrders, completeO
 				<span>Order Status</span>
 				<button
 					className="p-2 bg-green-400 text-white hover:bg-green-300 rounded-lg uppercase font-bold text-sm"
-					onClick={ () => getPendingOrders()}
+					onClick={ () => getPendingOrdersAndSales()}
 				> Refresh </button>
 			</h1>
 			<div className="grid grid-cols-2 gap-1">
 				<DbPanel 
-					end={25}
+					end={today.order_count || 0}
 					title="Today's Order"
 				  color="red" 
 				  icon={<FaSlackHash />}
@@ -120,6 +128,7 @@ const mapStateToProps = state => ({
 	loading: state.orders.loading,
 	sales_loading: state.sales.loading,
 	count: state.orders.count,
+	today: state.sales.today
 })
 
 export default connect(mapStateToProps, {getOrders, completeOrder, getSales})(Home)

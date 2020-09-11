@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import CountUp from 'react-countup';
 
-const DbPanel = ({end, color, title, icon }) => {
+const DbPanel = ({end, color, title, icon, money}) => {
 
 	const [hover, setHover] = useState(false);
 
@@ -14,7 +14,7 @@ const DbPanel = ({end, color, title, icon }) => {
 				{title}
 			</h1>
 			<span className="text-3xl font-bold text-white px-3">
-					<CountUp end={end} decimal="," prefix="&#8369;" />
+					<CountUp end={end} prefix={money ? "&#8369;" : ''} />
 			</span>
 			<span className={`absolute opacity-50 text-6xl transition-all duration-300 ease-in text-gray-200 top-0 right-0 mr-3 mt-3 transform ${ hover? 'scale-150' : ''} `}>
 				{icon}

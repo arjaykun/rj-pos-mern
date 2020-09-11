@@ -58,7 +58,7 @@ router
 								_id: {
 									year: { $year: '$createdAt' },
 								},
-								daily_sales: {$sum: '$total'},			
+								sales: {$sum: '$total'},			
 					 			order_count: {$sum: 1}
 							}
 						}
@@ -70,7 +70,7 @@ router
 									year: { $year: '$createdAt' },
 					 				month: { $month: '$createdAt' },
 								},
-								daily_sales: {$sum: '$total'},			
+								sales: {$sum: '$total'},			
 					 			order_count: {$sum: 1}
 							}
 						},
@@ -85,7 +85,7 @@ router
 					 				month: { $month: '$createdAt' },
 					 				day: { $dayOfMonth: '$createdAt' },
 					 			}, 
-					 			daily_sales: {$sum: '$total'},			
+					 			sales: {$sum: '$total'},			
 					 			order_count: {$sum: 1}
 					 		},
 					 	},
@@ -104,7 +104,7 @@ router
 					 				month: { $month: '$createdAt' },
 					 				day: { $dayOfMonth: '$createdAt' },
 					 			}, 
-					 			daily_sales: {$sum: '$total'},			
+					 			sales: {$sum: '$total'},			
 					 			order_count: {$sum: 1}
 					 		})
 

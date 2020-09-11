@@ -2,10 +2,10 @@ import React from 'react'
 import moment from 'moment'
 import { MdCheckCircle } from 'react-icons/md'
 
-const OrderDetail = ({order, completeOrder}) => {
+const OrderDetail = ({completeOrder, order}) => {
 
 	const handleClick = () => {
-		completeOrder(order)
+		completeOrder()
 	}
 
 	return (

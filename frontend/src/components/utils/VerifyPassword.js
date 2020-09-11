@@ -6,8 +6,8 @@ const VerifyPassword = ({data, action, hideModal}) => {
 	const [showPwd, setShowPwd] = useState(false)
 
 	const handleClick = () => {
-		action({...data, password})
 		hideModal()
+		action({...data, password})
 	}
 
 	return (
