@@ -18,7 +18,7 @@ const Home = ({user, orders, loading, sales_loading, count, getOrders, completeO
 
 	useEffect( () => {
 			getPendingOrdersAndSales()
-		
+			
 		// eslint-disable-next-line
 	}, [])
 
@@ -36,8 +36,6 @@ const Home = ({user, orders, loading, sales_loading, count, getOrders, completeO
 	const handleComplete = () => {
 		completeOrder(order)
 		setShowModal(false)
-
-		getPendingOrdersAndSales()
 	}
 
 	return (
@@ -73,7 +71,7 @@ const Home = ({user, orders, loading, sales_loading, count, getOrders, completeO
 			</h1>
 			<div className="grid grid-cols-2 gap-1">
 				<DbPanel 
-					end={today.order_count || 0}
+					end={today && today.order_count ? today.order_count : 0}
 					title="Today's Order"
 				  color="red" 
 				  icon={<FaSlackHash />}

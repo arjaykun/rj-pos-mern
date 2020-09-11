@@ -55,25 +55,25 @@ const CategoryForm = ({operation, loading, addCategory, messages, hideModal, cat
 					onChange={handleChange} 
 				/>
 
-				{/* color field */}
-				<div className="relative mb-3">
-	        <select 
-	        	className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-2 pr-8 rounded-lg leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state"
-	        	value={category.color}
-						name="color"
-						onChange={handleChange} 
-	        >
-	        	<option disabled value="">Select Color</option>
-	          {
-	          	colors.map( (color, i) => (
-	          		<option value={color} key={i}>{color}</option>
-	          	))
-	          }
-	        </select>
-	        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-	          <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-	        </div>
-	      </div>
+	     	{/* color radio button */}
+	     	<label className="mb-2 block uppercase tracking-wide text-gray-700 text-xs font-bold">
+					Select Color Theme
+				</label>
+	     	<div className="flex flex-wrap items-center justify-start mb-2">
+	     	{
+        	colors.map( (color, i) => (
+	        	<label key={i} className={` w-12 h-12 bg-${color}-600 rounded-lg border-2 border-white hover:bg-${color}-500 ${category.color === color? `border-${color}-700` : ''}`}>
+			     	 <input 
+			     	 	type="radio" 
+			     	 	value={color}
+			     	 	className="appearance-none hidden"
+			     	 	name="color"
+							onChange={handleChange} 
+						/>
+			     </label>
+        	))
+	       }
+		    </div>
 				<button 
 					className={`rounded-lg w-full p-2 text-gray-100 mb-4 ${loading? 'bg-gray-500' : 'bg-red-700 hover:bg-red-500 '}`}
 					type="submit"

@@ -2,7 +2,7 @@ import { GET_SALES, SALES_LOADING } from '../actions/types'
 
 const initialState = {
 	loading: false,
-	today: {},
+	today: null,
 	daily: [],
 	monthly: [],
 	yearly: [],

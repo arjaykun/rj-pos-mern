@@ -67,23 +67,21 @@ const ItemForm = ({operation, action, loading, hideModal, itemData, messages, ca
 				<label className="mb-2 block uppercase tracking-wide text-gray-700 text-xs font-bold">
 					Category
 				</label>
-				<div className="relative mb-3">
-	        <select 
-	        	className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-2 pr-8 rounded-lg leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state"
-	        	value={item.category}
-						name="category"
-						onChange={handleChange} 
-	        >
-	        	<option disabled value="">Select Category</option>
-	          {
-	          	categories.map( category => (
-	          		<option value={category.name} key={category._id}>{category.name}</option>
-	          	))
-	          }
-	        </select>
-	        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-	          <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-	        </div>
+				<div className="flex justify-start items-center flex-wrap mb-2">
+	        {
+	          categories.map( category => (
+		          <label key={category._id} className={`p-2 flex items-center justify-center bg-${category.color}-600 rounded-lg border-2 border-white hover:bg-${category.color}-500 ${item.category === category.name? `border-${category.color}-700` : null}`}>
+		           <span className="text-gray-100 font-bold text-xs">{category.name}</span>
+				     	 <input 
+				     	 	type="radio" 
+				     	 	value={category.name}
+				     	 	className="appearance-none hidden"
+				     	 	name="category"
+								onChange={handleChange} 
+							/>
+				     </label>
+	          ))
+	         }
 	      </div>
 
 				<button 
