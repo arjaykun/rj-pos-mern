@@ -13,6 +13,7 @@ const orderItemSchema = new mongoose.Schema({
 
 const orderSchema = new mongoose.Schema({
 	items: [orderItemSchema],
+	
 	order_id: {
 		type: String,
 		required: true,
