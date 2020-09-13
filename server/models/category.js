@@ -11,6 +11,11 @@ const categorySchema = new mongoose.Schema({
 		type: String,
 		lowercase: true, 
 		enum: ['red', 'green', 'yellow', 'blue', 'gray', 'teal', 'indigo', 'purple', 'pink', 'orange']
+	},
+
+	shop_id: {
+		type: String,
+		required: true,
 	}
 })
 

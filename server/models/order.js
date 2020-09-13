@@ -47,6 +47,16 @@ const orderSchema = new mongoose.Schema({
 	completed: {
 		type: Boolean,
 		default: false,
+	},
+
+	received_by: {
+		type: String,
+		required: true,
+	},
+
+	shop_id: {
+		type: String,
+		required: true,
 	}
 
 }, { timestamps: true})

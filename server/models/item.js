@@ -18,6 +18,11 @@ const itemSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 		lowercase: true, 
+	},
+
+	shop_id: {
+		type: String,
+		required: true,
 	}
 })
 

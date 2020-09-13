@@ -10,6 +10,13 @@ const userSchema = new mongoose.Schema({
 		minLength: 3,
 	},
 
+	shop: {
+		shop_id: String,
+		name: String,
+		address: { type: String, default: "No address given yet."},
+		description: { type: String, default: "No description given yet."},
+	},
+
 	email: {
 		type: String,
 		required: true,

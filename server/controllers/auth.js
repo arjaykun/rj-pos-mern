@@ -5,14 +5,14 @@ const uniqid = require('uniqid');
 
 exports.register =  async (req, res) => {
 	try {		//get request params & initialize userType as superadmin
-		const { name, email, password } = req.body;
+		const { name, email, password, shop_name } = req.body;
 		const userType = 'superadmin'
 		//hashed password
 		const salt = bcrypt.genSaltSync(10);
 		const hash = bcrypt.hashSync(password, salt);
 		
 		const user = await User.create({
-			name, email, password: hash, userType,
+			name, email, password: hash, userType, shop: { name: shop_name, shop_id: uniqid.process() }
 		})
 		//get token from created user then passed it as a response to log in.
 		if(user) {
@@ -21,10 +21,11 @@ exports.register =  async (req, res) => {
 				name: user.name,
 				email: user.email,
 				password: user.password,
-				userType: user.userType
+				userType: user.userType,
+				shop: user.shop
 			}, process.env.JWT_TOKEN_SECRET)
 				// re-declare user object that we want to return as a response
-			_user = { _id: user._id, name: user.name, email: user.email, userType: user.userType}
+			_user = { _id: user._id, name: user.name, email: user.email, userType: user.userType, shop: user.shop}
 			return res.status(200).json({ auth: true, token, user:_user })
 		}
 	}	catch({message}) {
@@ -46,7 +47,8 @@ exports.login = async (req, res) => {
 					email: user.email,
 					shop: user.shop,
 					password: user.password,
-					userType: user.userType
+					userType: user.userType,
+					shop: user.shop
 				}, process.env.JWT_TOKEN_SECRET)
 				// re-declare user object that we want to return as a response
 				_user = { _id: user._id, name: user.name, email: user.email, userType: user.userType, shop: user.shop}
