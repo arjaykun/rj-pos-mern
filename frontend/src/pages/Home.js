@@ -24,7 +24,7 @@ const Home = ({user, orders, loading, sales_loading, count, getOrders, completeO
 
 	const getPendingOrdersAndSales = () => {
 		getOrders(`/orders?page=1&limit=100&filter_by=completed&filter_with=false`)
-		getSales('/orders/sales')
+		getSales('/sales')
 	}
 
 	// get the selected order then show the modal passing that order in OrderDetail component

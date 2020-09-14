@@ -2,7 +2,7 @@ import { ADD_ORDER, ORDER_LOADING, GET_ORDERS, CHANGE_ORDERS_URL, UPDATE_ORDER }
 import axios from 'axios';
 import { createHeader } from './helpers';
 
-const base_url = process.env.BASE_URL || "http://localhost:8000"
+const base_url = process.env.BASE_URL || "http://localhost:8000/api/v1"
 
 export const getOrders = uri => {
 	return async (dispatch, getState) => {

@@ -85,8 +85,8 @@ const canUpdate = (userType, reqUserType) => {
 		return false
 	} else if(userType === 'superadmin') {
 		return false
-	}
 	return true
+	}
 }
 
 exports.changePassword = async (req, res) => {
@@ -109,9 +109,7 @@ exports.changePassword = async (req, res) => {
 			return res.json({ msg: 'User password updated.'} )
 		} else {
 			return res.status(400).json({ msg: 'Wrong password.'} )
-		}
-			
-		
+		}		
 	} catch({message}) {
 		res.status(500).json({ msg: message });
 	}

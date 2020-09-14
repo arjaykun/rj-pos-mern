@@ -83,18 +83,20 @@ const Orders = ({getOrders, orders, loading, change_url}) => {
 				</thead>
 				<tbody>
 					{
-						orders.orders.map( (order, index) => (
-							<tr key={order._id} className={`${index%2 !== 0? 'bg-gray-200' : null} text-sm`}>
-								<td className="py-2">{ moment(order.createdAt).format('MM/DD/YY hh:mm A')}</td>
-								<td className="py-2">{ order.order_id }</td>
-								<td className="py-2">&#8369; {order.total}</td>
-								<td className="py-2">
-									<Link to={{pathname:`/admin/orders/${order._id}`, data:order}} >
-										<FaChevronCircleRight />
-									</Link>
-								</td>
-							</tr>
-						))
+						orders.orders.length > 0 ?
+							orders.orders.map( (order, index) => (
+								<tr key={order._id} className={`${index%2 !== 0? 'bg-gray-200' : null} text-sm`}>
+									<td className="py-2">{ moment(order.createdAt).format('MM/DD/YY hh:mm A')}</td>
+									<td className="py-2">{ order.order_id }</td>
+									<td className="py-2">&#8369; {order.total}</td>
+									<td className="py-2">
+										<Link to={{pathname:`/admin/orders/${order._id}`, data:order}} >
+											<FaChevronCircleRight />
+										</Link>
+									</td>
+								</tr>
+							))
+						: <tr><td colSpan="4" className="text-center text-4xl bg-gray-200 py-5 font-bold">No Orders</td></tr>
 					}
 				</tbody>
 

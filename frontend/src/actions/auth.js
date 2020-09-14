@@ -3,7 +3,7 @@ import axios from 'axios'
 import { addErrorMessage, addSuccessMessage } from './messages';
 import { createHeader } from './helpers';
 
-const base_url = process.env.BASE_URL || "http://localhost:8000"
+const base_url = process.env.BASE_URL || "http://localhost:8000/api/v1"
 
 export const loadUser = () => {
 	return async (dispatch, getState) => {
@@ -40,13 +40,13 @@ export const login = (email, password) => {
 	}
 }
 
-export const register = (name, email, password) => {
+export const register = data => {
 	return async dispatch => {
 		dispatch({type: AUTH_LOADING})
 		try {
-			const user = await axios.post(base_url + '/auth/register', {name, email, password})
-			const data = user.data
-			dispatch({type: LOGIN_USER, payload: { token: data.token, user: data.user } })
+			const user = await axios.post(base_url + '/auth/register', data)
+			const response = user.data
+			dispatch({type: LOGIN_USER, payload: { token: response.token, user: response.user } })
 			return true
 		} catch(error) {
 			addErrorMessage(dispatch, error)

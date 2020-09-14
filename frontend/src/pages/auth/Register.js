@@ -7,9 +7,7 @@ import { clear_message } from '../../actions/messages'
 import { FaRegEyeSlash, FaRegEye } from 'react-icons/fa'
 
 const Login = ({message, register, auth, clear_message}) => {
-	const [name, setName] = useState('')
-	const [email, setEmail] = useState('')
-	const [password, setPassword] = useState('')
+	const [data, setData] = useState({ name: '', email: '', shop_name: '', password: ''})
 	const [showPwd, setShowPwd] = useState(false)
 	useEffect( () => {
     return () => clear_message()
@@ -17,15 +15,14 @@ const Login = ({message, register, auth, clear_message}) => {
     // eslint-disable-next-line
 	}, [])
 
+	const handleChange = e => {
+		e.persist()
+		setData( prevState => ({...prevState, [e.target.name]: e.target.value}))
+	}
 
 	const handleRegister = e => {
 		e.preventDefault()
-		const res = register(name, email, password)
-		if(res){
-			setName('')
-			setEmail('')
-			setPassword('')
-		}
+		register(data)
 	}
 	
 	return (
@@ -48,10 +45,11 @@ const Login = ({message, register, auth, clear_message}) => {
 							<label className="uppercase text-base font-bold text-gray-700">Name *</label>
 							<input 
 								type="text" 
-								value={name} 
-								onChange={ e => setName(e.target.value) }
+								value={data.name} 
+								name="name"
+								onChange={handleChange}
 								placeholder="John Doe"
-								className="custom-input"
+								className="custom-input focus:bg-white"
 							/>
 						</div>
 
@@ -59,20 +57,34 @@ const Login = ({message, register, auth, clear_message}) => {
 							<label className="uppercase text-base font-bold text-gray-700">E-mail *</label>
 							<input 
 								type="email" 
-								value={email} 
-								onChange={ e => setEmail(e.target.value) }
+								value={data.email} 
+								name="email"
+								onChange={handleChange}
 								placeholder="your@email.com"
-								className="custom-input"
+								className="custom-input focus:bg-white"
 							/>
 						</div>
+						
+						<div className="mb-4">
+							<label className="uppercase text-base font-bold text-gray-700">Shop Name: *</label>
+							<input 
+								type="text" 
+								value={data.shop_name} 
+								name="shop_name"
+								onChange={handleChange}
+								placeholder="Enter your shop name."
+								className="custom-input focus:bg-white"
+							/>
+						</div>						
 
 						<div className="mb-4">
 							<label className="uppercase text-base font-bold text-gray-700">Password *</label>
 							<label className="relative">
 								<input 
 									type={showPwd? 'text':'password'}
-									value={password} 
-									onChange={ e => setPassword(e.target.value) }
+									value={data.password} 
+									name="password"
+									onChange={handleChange}
 									placeholder="*********"
 									className="custom-input focus:bg-white" 
 								/>
@@ -92,7 +104,7 @@ const Login = ({message, register, auth, clear_message}) => {
 							type="submit" 
 							className="btn bg-red-600 hover:bg-red-500 w-full"
 						>
-						LOGIN
+						Register
 						</button>
 					</form>
 					<div className="pt-5 text-center text-gray-700">

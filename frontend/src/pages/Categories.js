@@ -94,14 +94,16 @@ const Categories = ({categories, loading, getCategories, deleteCategory, clear_m
 			}
 
 			{
-				categories.map( category => (
-					<CategoryDetail 
-						category={category} 
-						key={category._id} 
-						deleteCategory={handleDelete}
-						updateCategory={handleUpdate}
-					/>
-				))
+				categories.length > 0 ?
+					categories.map( category => (
+						<CategoryDetail 
+							category={category} 
+							key={category._id} 
+							deleteCategory={handleDelete}
+							updateCategory={handleUpdate}
+						/>
+					))
+				: <div className="text-center text-4xl bg-gray-200 py-5 font-bold">No Category</div>
 			}
 		</div>
 	)

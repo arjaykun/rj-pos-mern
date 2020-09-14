@@ -7,7 +7,7 @@ exports.getSales = async (req, res) => {
 	// daily sales with limit of 7 days
 	try {
 		const result = await Order.aggregate()
-			.match({completed: true})
+			.match({completed: true, shop_id: req.user.shop.shop_id})
 			.facet({
 				yearly: [
 					{
@@ -55,7 +55,11 @@ exports.getSales = async (req, res) => {
 		const start = moment().startOf('day')
 		const end = moment().endOf('day')
 		const today = await Order.aggregate()
-			.match({completed: true, createdAt: { $gte: new Date(Date.parse(start)), $lte: new Date(Date.parse(end))  }})
+			.match({
+				completed: true, 
+				shop_id: req.user.shop.shop_id, 
+				createdAt: { $gte: new Date(Date.parse(start)), $lte: new Date(Date.parse(end))  }
+			})
 			.group({
 				 			_id: {
 				 				year: { $year: '$createdAt' },

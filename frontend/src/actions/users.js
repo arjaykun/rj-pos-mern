@@ -3,7 +3,7 @@ import axios from 'axios'
 import { addErrorMessage, addSuccessMessage } from './messages';
 import { createHeader } from './helpers';
 
-const base_url = process.env.BASE_URL || "http://localhost:8000"
+const base_url = process.env.BASE_URL || "http://localhost:8000/api/v1"
 
 export const getUsers = url => {
 	return async (dispatch, getState) => {

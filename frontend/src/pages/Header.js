@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { logout } from '../actions/auth'
 
-const Header = ({logout}) => {
+const Header = ({logout, shop_name}) => {
 	const location = useLocation()
 
 	if(location.pathname === '/login' ||  location.pathname === '/register')
@@ -13,7 +13,9 @@ const Header = ({logout}) => {
 
 	return (
 		<div className="bg-red-600 text-white p-3">
-			<h1 className="bg-gray text-2xl font-bold text-center">RJ SHOP</h1>	
+			<h1 className="bg-gray text-xl font-bold text-center">
+				{ shop_name }
+			</h1>	
 			<div className="flex items-center justify-between">
 				<div className="flex items-center">
 					<div className="mr-4"><Link to="/" className="flex items-center"><MdHome className="mx"/> Home</Link>
@@ -35,5 +37,8 @@ const Header = ({logout}) => {
 		</div>
 	)
 }
+const mapStateToProps = state => ({
+	shop_name: state.auth.user.shop ? state.auth.user.shop.name : 'RJ Shop',
+})
 
-export default connect(null, {logout})(Header)
+export default connect(mapStateToProps, {logout})(Header)

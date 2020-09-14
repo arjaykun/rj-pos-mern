@@ -2,7 +2,7 @@ import { GET_SHOP_ITEMS, SHOP_ITEMS_LOADING, GET_ALL_ITEMS} from './types'
 import axios from 'axios'
 import { createHeader } from './helpers';
 
-const base_url = process.env.BASE_URL || "http://localhost:8000"
+const base_url = process.env.BASE_URL || "http://localhost:8000/api/v1"
 
 export const getShopItems = () => {
 	return async (dispatch, getState) => {

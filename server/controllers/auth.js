@@ -7,6 +7,9 @@ exports.register =  async (req, res) => {
 	try {		//get request params & initialize userType as superadmin
 		const { name, email, password, shop_name } = req.body;
 		const userType = 'superadmin'
+		if(password.length < 6) {
+			return res.status(400).json({msg: "Invalid password! Must be 6 characters up."})
+		}
 		//hashed password
 		const salt = bcrypt.genSaltSync(10);
 		const hash = bcrypt.hashSync(password, salt);
@@ -65,11 +68,11 @@ exports.login = async (req, res) => {
 exports.updateUserInfo = async (req, res) => {
 	try {
 		const user = await User.findOne({_id: req.params.id})
-		const {name, email, password} = req.body;
+		const {name, email, shop, password} = req.body;
 		if( await bcrypt.compare(password, user.password) ) {
 			const option = {omitUndefined:true, runValidators: true};
 			await User.updateOne({_id:req.params.id}, {
-				$set: { name, email }
+				$set: { name, email, shop }
 			}, option);
 			return res.json({ msg: 'User updated.'} )
 		} else {

@@ -25,7 +25,7 @@ const Shop = ({loading, getShopItems, categories, allItems, getAllItems, cartTot
 		}
 		getColors()
 		//eslint-disable-next-line
-	}, [categories])
+	}, [])
 
 
 	const getColors = () => {

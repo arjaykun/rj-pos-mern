@@ -10,7 +10,7 @@ import moment from 'moment'
 const Dashboard = ({getSales, sales}) => {
 
 	useEffect( () => {
-		getSales('/orders/sales')
+		getSales('/sales')
 		// eslint-disable-next-line
 	}, [])
 
@@ -64,7 +64,7 @@ const Dashboard = ({getSales, sales}) => {
 			<h1 className="text-xl text-gray-700 py-1 font-bold">Servings/ Orders Status</h1>
 			<div className="grid grid-cols-2 gap-1">			
 				<DbPanel 
-					end={sales.today.order_count}
+					end={sales.today ? sales.today.order_count : 0 }
 					title="Today's Serving"
 				  color="orange" 
 				  money={false}
