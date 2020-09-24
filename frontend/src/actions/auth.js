@@ -16,7 +16,7 @@ export const loadUser = () => {
 				const user = await axios.get(base_url + '/auth/user', config)
 				dispatch({type:LOAD_USER, payload: {user:user.data.user, token: token} })
 			} catch(error) {
-			 	window.location.href = '/error'
+			 	// window.location.href = '/error'
 			} 
 		}
 	}
@@ -57,6 +57,7 @@ export const register = data => {
 }
 
 export const updateAccount = user => {
+	console.log(user)
 	return async (dispatch, getState) => {
 		dispatch({ type: AUTH_LOADING })
 		try {

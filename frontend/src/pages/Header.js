@@ -38,7 +38,7 @@ const Header = ({logout, shop_name}) => {
 	)
 }
 const mapStateToProps = state => ({
-	shop_name: state.auth.user.shop ? state.auth.user.shop.name : 'RJ Shop',
+	shop_name: state.auth.user && state.auth.user.shop ? state.auth.user.shop.name : 'RJ Shop',
 })
 
 export default connect(mapStateToProps, {logout})(Header)

@@ -6,10 +6,14 @@ import Loading from '../components/utils/Loading'
 import Modal from '../components/utils/Modal'
 import AlertMessage from '../components/utils/AlertMessage'
 import VerifyPassword from '../components/utils/VerifyPassword'
+import CustomButton from '../components/utils/CustomButton'
+import ChangePasswordForm from '../components/users/ChangePasswordForm'
 
 const Profile = ({user, updateAccount, loading, messages}) => {
 	const [profile, setProfile] = useState({_id: '',name:'', email: '', userType: '', shop: { name: '', address:'', description: ''}})
 	const [showModal, setShowModal] = useState(false)
+	const [showPwdModal, setShowPwdModal] = useState(false)
+
 
 	useEffect(() =>{
 		setProfile({
@@ -45,6 +49,11 @@ const Profile = ({user, updateAccount, loading, messages}) => {
 				<VerifyPassword action={updateAccount} data={profile} hideModal={() => setShowModal(false)} />
 			</Modal>
 
+			<Modal show={showPwdModal} hideModal={ () => setShowPwdModal(false) } >
+				<ChangePasswordForm hideModal={() => setShowPwdModal(false)} />
+			</Modal>
+
+
 			<h1 className="border-b border-t border-red-900 my-2 font-bold py-2 uppercase text-lg">
 				<span> Profile Information </span>
 			</h1>
@@ -59,42 +68,39 @@ const Profile = ({user, updateAccount, loading, messages}) => {
 				<label className="mb-2 block uppercase tracking-wide text-gray-700 text-xs font-bold">
 					Name
 				</label>
-				<input 
+				<input
+					className="bg-gray-200 border border-gray-200 w-full text-base rounded-lg p-2 mb-4 text-gray-700 appearance-none focus:outline-none focus:bg-white" 
 					type="text"
-					className="bg-gray-200 border border-gray-200 w-full text-base rounded-lg p-2 mb-4 text-gray-700 appearance-none focus:outline-none focus:bg-white"
-					placeholder="His/ her name"
-					value={profile.name}
+					value={profile.name}	
 					name="name"
 					onChange={handleChange} 
 				/>
-
 
 				{/* email field */}
 				<label className="mb-2 block uppercase tracking-wide text-gray-700 text-xs font-bold">
 					E-mail
 				</label>
-				<input 
+				<input
+					className="bg-gray-200 border border-gray-200 w-full text-base rounded-lg p-2 mb-4 text-gray-700 appearance-none focus:outline-none focus:bg-white" 
 					type="email"
-					className="bg-gray-200 border border-gray-200 w-full text-base rounded-lg p-2 mb-4 text-gray-700 appearance-none focus:outline-none focus:bg-white"
-					placeholder="user@email.com"
-					value={profile.email}
+					value={profile.email}	
 					name="email"
-					onChange={handleChange}
+					onChange={handleChange} 
 				/>
 
-				{/* userType field */}
+				{/* userType field */}				
 				<label className="mb-2 block uppercase tracking-wide text-gray-700 text-xs font-bold">
 					User Type
 				</label>
 				<label className="relative">
-					<input 
+					<input
+						className="bg-gray-200 border border-gray-200 w-full text-base rounded-lg p-2 mb-4 text-gray-700 appearance-none focus:outline-none focus:bg-white" 
 						type="text"
-						className="bg-gray-200 border border-gray-200 w-full text-base rounded-lg p-2 mb-4 text-gray-700 appearance-none focus:outline-none focus:bg-white"
-						placeholder="user@email.com"
-						value={user.userType}
-						disabled 
+						value={profile.userType}	
+						onChange={handleChange} 
+						disabled
 					/>
-				<span className="absolute top-0 right-0 mr-4"><MdLock className="text-gray-700 text-xl" /></span>
+					<span className="absolute top-0 right-0 mr-4"><MdLock className="text-gray-700 text-xl" /></span>
 				</label>
 
 				{/* password field */}
@@ -102,15 +108,18 @@ const Profile = ({user, updateAccount, loading, messages}) => {
 					Password
 				</label>
 				<label className="relative">
-					<input 
-						type="password"
-						className="bg-gray-200 border border-gray-200 w-full text-base rounded-lg p-2 mb-4 text-gray-700 appearance-none focus:outline-none foc
-						us:bg-white"
-						placeholder="user@email.com"
+					<input
+						className="bg-gray-200 border border-gray-200 w-full text-base rounded-lg p-2 mb-4 text-gray-700 appearance-none focus:outline-none focus:bg-white" 
+						type="password"	
 						value="*************"
-						disabled 
+						disabled
 					/>
-					<span className="absolute top-0 right-0 mr-4"><MdModeEdit className="text-gray-700 hover:text-gray-600 cursor-pointer text-xl" /></span>
+					<span className="absolute top-0 right-0 mr-4">
+						<MdModeEdit 
+							className="text-gray-700 hover:text-gray-600 cursor-pointer text-xl" 
+							onClick={ () => setShowPwdModal(true) }
+						/>
+					</span>
 				</label>
 
 				<h1 className="border-b border-t border-red-900 my-2 font-bold py-2 uppercase text-lg">
@@ -121,11 +130,11 @@ const Profile = ({user, updateAccount, loading, messages}) => {
 				<label className="mb-2 block uppercase tracking-wide text-gray-700 text-xs font-bold">
 					Shop Name
 				</label>
-				<input 
+				<input
+					className="bg-gray-200 border border-gray-200 w-full text-base rounded-lg p-2 mb-4 text-gray-700 appearance-none focus:outline-none focus:bg-white" 
 					type="text"
-					className="bg-gray-200 border border-gray-200 w-full text-base rounded-lg p-2 mb-4 text-gray-700 appearance-none focus:outline-none focus:bg-white"
-					value={profile.shop.name}
-					name="name"
+					value={profile.shop.name}	
+					name="name"					
 					onChange={handleChangeShop} 
 				/>
 
@@ -133,13 +142,14 @@ const Profile = ({user, updateAccount, loading, messages}) => {
 				<label className="mb-2 block uppercase tracking-wide text-gray-700 text-xs font-bold">
 					Address/ Location
 				</label>
-				<input 
+				<input
+					className="bg-gray-200 border border-gray-200 w-full text-base rounded-lg p-2 mb-4 text-gray-700 appearance-none focus:outline-none focus:bg-white" 
 					type="text"
-					className="bg-gray-200 border border-gray-200 w-full text-base rounded-lg p-2 mb-4 text-gray-700 appearance-none focus:outline-none focus:bg-white"
-					value={profile.shop.address}
+					value={profile.shop.address}	
 					name="address"
 					onChange={handleChangeShop} 
 				/>
+
 
 				{/* shop description field */}
 				<label className="mb-2 block uppercase tracking-wide text-gray-700 text-xs font-bold">
@@ -153,16 +163,17 @@ const Profile = ({user, updateAccount, loading, messages}) => {
 					onChange={handleChangeShop} 
 				/>
 
-				
-				<button 
-					className={`btn w-full mb-4 bg-red-700 flex items-center justify-center hover:bg-red-600`}
+
+				<CustomButton
 					type="submit"
+					color="red"
+					block
 					onClick={handleUpdate}
-					>
+				>
 					<div className=" uppercase font-bold">Save </div>
 					<MdSave className="ml-2 text-xl text-white" />
-					
-			</button>
+				</CustomButton>
+	
 
 			</form>
 		</div>

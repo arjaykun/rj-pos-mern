@@ -7,7 +7,18 @@ exports.getUsers = async (req, res) => {
 		// get pagination queries and options
 		const { query, options } = pagination(req.query);
 		//get users by shop then paginate it and return is a response 
-		const users = await User.paginate({...query, 'shop.shop_id': req.user.shop.shop_id}, {...options, select: "_id name email userType"});
+		const users = await User.paginate(
+			{
+				...query, 
+				'shop.shop_id': req.user.shop.shop_id,
+				'_id': { $ne :req.user._id},
+			}, 
+			{	
+				...options, 
+				select: "_id name email userType" 
+			}
+		);
+
 		return res.json(users)
 	 } catch(error) {
 	 	return res.status(500).json({ msg: 'Sorry, Something went wrong!'})

@@ -5,7 +5,7 @@ const { getItems, addItem, updateItem, deleteItem } = require('../controllers/it
 
 router
 	.route('/')
-	.get(isAdmin, getItems)
+	.get(getItems)
 	.post(isAdmin, addItem) 
 	
 router

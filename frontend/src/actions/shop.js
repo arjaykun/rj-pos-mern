@@ -13,7 +13,7 @@ export const getShopItems = () => {
 			const res = await axios.get(base_url+"/categories", config)
 			dispatch({type:GET_SHOP_ITEMS, payload: res.data})
 		} catch(error) {
-			window.location.href = '/error'
+			// window.location.href = '/error'
 		}
 		
 	}

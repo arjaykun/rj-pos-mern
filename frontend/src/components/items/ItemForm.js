@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { MdSave } from "react-icons/md";
 import AlertMessage from '../utils/AlertMessage';
+import CustomInput from '../utils/CustomInput';
+import CustomButton from '../utils/CustomButton';
 
 const ItemForm = ({operation, action, loading, hideModal, itemData, messages, categories}) => {
 		
 	const [item, setItem] = useState({name:'', price: '', category: ''});
 	const inputRef = useRef();
 	
-
 	useEffect( ()=> {
 		if(!loading && !messages.error) 
 			hideModal()
@@ -69,28 +71,37 @@ const ItemForm = ({operation, action, loading, hideModal, itemData, messages, ca
 				</label>
 				<div className="flex justify-start items-center flex-wrap mb-2">
 	        {
-	          categories.map( category => (
-		          <label key={category._id} className={`p-2 flex items-center justify-center bg-${category.color}-600 rounded-lg border-2 border-white hover:bg-${category.color}-500 ${item.category === category.name? `border-${category.color}-700` : null}`}>
-		           <span className="text-gray-100 font-bold text-xs">{category.name}</span>
-				     	 <input 
-				     	 	type="radio" 
-				     	 	value={category.name}
-				     	 	className="appearance-none hidden"
-				     	 	name="category"
-								onChange={handleChange} 
-							/>
-				     </label>
-	          ))
+	        	categories.length > 0 ?
+		          categories.map( category => (
+			          <label key={category._id} className={`p-2 flex items-center justify-center bg-${category.color}-600 rounded-lg border-2 border-white hover:bg-${category.color}-500 ${item.category === category.name? `border-${category.color}-700` : null}`}>
+			           <span className="text-gray-100 font-bold text-xs">{category.name}</span>
+					     	 <input 
+					     	 	type="radio" 
+					     	 	value={category.name}
+					     	 	className="appearance-none hidden"
+					     	 	name="category"
+									onChange={handleChange} 
+								/>
+					     </label>
+		          ))
+		        : <div className="text-gray-700 text-sm">No Categories added yet, 
+		        		<span className="font-bold text-blue-800 cursor-pointer"><Link to="/admin/categories" > Add category.</Link></span>
+		        	</div>
 	         }
 	      </div>
 
-				<button 
-					className={`rounded-lg w-full p-2 text-gray-100 mb-4 ${loading? 'bg-gray-500' : 'bg-red-700 hover:bg-red-500 '}`}
-					type="submit"
-					disabled={loading}
-					>
-						<span  className="w-full flex justify-center"><MdSave /></span> 
-				</button>
+	      <CustomButton
+	      	type="submit"
+	      	color="red"
+	      	disabled={loading}
+	      	block
+	      >
+					<span  className="w-full flex justify-center uppercase items-center font-bold">
+						<MdSave className="text-lg mr-1" /> Save Item
+					</span> 
+	      </CustomButton>
+
+
 
 			</form>
 		</div>

@@ -4,7 +4,7 @@ const { isAdmin } = require('../middlewares/checkRole')
 const { getCategories, addCategory, updateCategory, deleteCategory } = require('../controllers/categories')
 
 router.route('/')
-	.get( isAdmin, getCategories)
+	.get(getCategories)
 	.post( isAdmin, addCategory)
 
 router

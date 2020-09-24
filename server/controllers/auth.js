@@ -69,6 +69,7 @@ exports.updateUserInfo = async (req, res) => {
 	try {
 		const user = await User.findOne({_id: req.params.id})
 		const {name, email, shop, password} = req.body;
+
 		if( await bcrypt.compare(password, user.password) ) {
 			const option = {omitUndefined:true, runValidators: true};
 			await User.updateOne({_id:req.params.id}, {
@@ -80,5 +81,16 @@ exports.updateUserInfo = async (req, res) => {
 		}
 	} catch({message}){
 		res.status(500).json({ msg: message });
+	}
+}
+
+exports.getUser = async (req, res) => {
+	try {
+		const id = req.user._id
+	  const user = await User.findOne({_id:id});
+	  res.json({user});
+	} catch(error) {
+		console.log(error)
+		 res.status(500).json({msg: "Something went wrong!"})
 	}
 }

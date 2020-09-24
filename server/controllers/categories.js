@@ -12,8 +12,10 @@ exports.getCategories = async (req, res) => {
 	}
 
 	try {
-		const categories = await Category.find({shop_id: req.user.shop.shop_id}).populate('items')
-
+		const categories = await Category.find({shop_id: req.user.shop.shop_id}).populate({
+			"path":"items",
+			"match": {shop_id: req.user.shop.shop_id}
+		})
 		res.status(200).json({
 			data: categories.map( cat => ({
 							_id: cat.id,

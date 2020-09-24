@@ -18,15 +18,18 @@ const Shop = ({loading, getShopItems, categories, allItems, getAllItems, cartTot
 	const [items, setItems] = useState([]);
 	const [colors, setColors] = useState({})
 	
-	useEffect( ()=> {
+	useEffect( () => {
 		if(categories.length === 0) {		
 			getAllItems()
 			getShopItems()
 		}
-		getColors()
 		//eslint-disable-next-line
 	}, [])
 
+	useEffect( ()=> {
+		getColors()
+		//eslint-disable-next-line
+	}, [categories])
 
 	const getColors = () => {
 		const output = {}
